@@ -1,0 +1,31 @@
+from app.models.entities import (
+    User,
+    UserVerification,
+    Vehicle,
+    Ride,
+    RideStop,
+    Booking,
+    Payment,
+    Message,
+    Review,
+    Notification,
+    Report,
+    SavedPlace,
+    AdminAuditLog,
+)
+
+__all__ = [
+    "User",
+    "UserVerification",
+    "Vehicle",
+    "Ride",
+    "RideStop",
+    "Booking",
+    "Payment",
+    "Message",
+    "Review",
+    "Notification",
+    "Report",
+    "SavedPlace",
+    "AdminAuditLog",
+]

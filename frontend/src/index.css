@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --brand-lavender: #9B7EDE;
+    --brand-deep: #6F55B7;
+    --brand-soft: #EEE8FA;
+    --brand-black: #16131D;
+    --brand-dark-card: #1E1B26;
+    --brand-dark-border: #2E293B;
+  }
+
+  body {
+    background-color: #16131D;
+    color: #F7F5FC;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+/* Custom Glassmorphism & Micro-styling */
+.glass-panel {
+  background: rgba(30, 27, 38, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(155, 126, 222, 0.15);
+}
+
+.glass-panel-hover {
+  background: rgba(30, 27, 38, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(155, 126, 222, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel-hover:hover {
+  border-color: rgba(155, 126, 222, 0.45);
+  box-shadow: 0 10px 30px -10px rgba(155, 126, 222, 0.25);
+  transform: translateY(-2px);
+}
+
+.glass-nav {
+  background: rgba(22, 19, 29, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(155, 126, 222, 0.12);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #9B7EDE 0%, #6F55B7 100%);
+  color: #FFFFFF;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 15px rgba(155, 126, 222, 0.35);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #A88DE6 0%, #7D63C7 100%);
+  box-shadow: 0 6px 20px rgba(155, 126, 222, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: rgba(155, 126, 222, 0.12);
+  color: #EEE8FA;
+  border: 1px solid rgba(155, 126, 222, 0.25);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(155, 126, 222, 0.2);
+  border-color: rgba(155, 126, 222, 0.5);
+  color: #FFFFFF;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #FFFFFF 30%, #C7B5EE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-lavender {
+  background: linear-gradient(135deg, #C7B5EE 0%, #9B7EDE 50%, #6F55B7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #16131D;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2E293B;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6F55B7;
+}
+
+/* Leaflet dark theme tweaks */
+.leaflet-container {
+  background: #1E1B26 !important;
+  border-radius: 0.75rem;
+  font-family: inherit !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #1E1B26 !important;
+  color: #EEE8FA !important;
+  border: 1px solid rgba(155, 126, 222, 0.3) !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+.leaflet-popup-tip {
+  background: #1E1B26 !important;
+}
+
+/* Dark Theme Date & Time Pickers */
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+  color-scheme: dark;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8) brightness(1.2) sepia(1) hue-rotate(220deg);
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover,
+input[type="time"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+

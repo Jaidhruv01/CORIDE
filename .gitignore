@@ -1,0 +1,28 @@
+# Environment
+.env
+.env.local
+.env.production
+backend/.env
+frontend/.env
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+
+# Local database
+coride.db
+*.db
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
