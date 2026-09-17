@@ -156,14 +156,30 @@ export const RideDetailPage: React.FC = () => {
                   {departureDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
                 </span>
               </div>
-              <div className="flex items-center space-x-2 text-xs">
+              <div className="flex flex-wrap items-center gap-2 text-xs">
+                {ride.ride_type === 'BIKEPOOL' ? (
+                  <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-3 py-1 rounded-full font-bold flex items-center gap-1 shadow-glow-sm">
+                    <span>🏍️</span> Bike Pool
+                  </span>
+                ) : (
+                  <span className="bg-lavender-500/20 text-lavender-300 border border-lavender-500/40 px-3 py-1 rounded-full font-bold flex items-center gap-1">
+                    <span>🚗</span> Carpool
+                  </span>
+                )}
+
+                {(ride.helmet_provided || vehicle?.helmet_provided) && (
+                  <span className="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-full font-semibold flex items-center gap-1">
+                    🪖 Helmet Provided
+                  </span>
+                )}
+
                 {ride.booking_mode === 'INSTANT' && (
                   <span className="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-full font-semibold flex items-center gap-1">
                     <Sparkles className="w-3 h-3 text-emerald-400" /> Instant Confirmation
                   </span>
                 )}
                 <span className="bg-lavender-500/15 text-lavender-300 border border-lavender-500/30 px-3 py-1 rounded-full font-semibold">
-                  {ride.seats_available} seats remaining
+                  {ride.seats_available} {ride.ride_type === 'BIKEPOOL' ? 'pillion seat' : 'seats'} remaining
                 </span>
               </div>
             </div>
@@ -290,7 +306,18 @@ export const RideDetailPage: React.FC = () => {
 
             {/* Vehicle Card */}
             <div className="glass-panel p-6 rounded-3xl border border-lavender-500/20 space-y-4">
-              <h4 className="font-bold text-white text-sm uppercase tracking-wider text-lavender-300">Vehicle & Amenities</h4>
+              <div className="flex items-center justify-between">
+                <h4 className="font-bold text-white text-sm uppercase tracking-wider text-lavender-300">
+                  {ride.ride_type === 'BIKEPOOL' ? '🏍️ Two-Wheeler / Bike Details' : '🚗 Vehicle & Amenities'}
+                </h4>
+                <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
+                  ride.ride_type === 'BIKEPOOL'
+                    ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                    : 'bg-lavender-500/15 text-lavender-300 border-lavender-500/30'
+                }`}>
+                  {ride.ride_type === 'BIKEPOOL' ? 'TWO-WHEELER' : 'FOUR-WHEELER'}
+                </span>
+              </div>
               
               {vehicle ? (
                 <div className="space-y-3 text-xs">
@@ -308,19 +335,32 @@ export const RideDetailPage: React.FC = () => {
                       {vehicle.registration_no}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400">AC Available:</span>
-                    <span className={vehicle.ac ? "text-emerald-400 font-semibold" : "text-gray-400"}>
-                      {vehicle.ac ? "Yes, Climate Controlled" : "Non-AC"}
-                    </span>
-                  </div>
+                  {ride.ride_type === 'BIKEPOOL' ? (
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-400">Safety Helmet:</span>
+                      <span className={ride.helmet_provided || vehicle.helmet_provided ? "text-emerald-400 font-semibold" : "text-amber-400"}>
+                        {ride.helmet_provided || vehicle.helmet_provided ? "🪖 Provided by Driver" : "🪖 Bring Your Own Helmet"}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-400">AC Available:</span>
+                      <span className={vehicle.ac ? "text-emerald-400 font-semibold" : "text-gray-400"}>
+                        {vehicle.ac ? "Yes, Climate Controlled" : "Non-AC"}
+                      </span>
+                    </div>
+                  )}
                   <div className="flex items-center justify-between">
                     <span className="text-gray-400">Luggage Allowance:</span>
-                    <span className="text-lavender-200 font-medium">{vehicle.luggage_capacity} Bags</span>
+                    <span className="text-lavender-200 font-medium">
+                      {ride.ride_type === 'BIKEPOOL' ? 'Backpack / Handbag' : `${vehicle.luggage_capacity} Bags`}
+                    </span>
                   </div>
                 </div>
               ) : (
-                <p className="text-xs text-gray-400">Standard verified 4-wheeler vehicle.</p>
+                <p className="text-xs text-gray-400">
+                  {ride.ride_type === 'BIKEPOOL' ? 'Verified two-wheeler motorcycle.' : 'Standard verified 4-wheeler vehicle.'}
+                </p>
               )}
 
               {/* Preferences Strip */}
@@ -391,18 +431,18 @@ export const RideDetailPage: React.FC = () => {
                   <span className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-lavender-200 to-lavender-400">
                     ₹{ride.price_per_seat}
                   </span>
-                  <span className="text-xs text-gray-400">/ seat</span>
+                  <span className="text-xs text-gray-400">/ {ride.ride_type === 'BIKEPOOL' ? 'pillion ride' : 'seat'}</span>
                 </div>
               </div>
               <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-                {ride.seats_available} available
+                {ride.seats_available} {ride.ride_type === 'BIKEPOOL' ? 'seat available' : 'available'}
               </span>
             </div>
 
             {/* Seat Quantity Selector */}
             <div className="space-y-2 text-left">
               <label className="text-xs text-gray-300 font-semibold flex items-center justify-between">
-                <span>Select Number of Seats</span>
+                <span>{ride.ride_type === 'BIKEPOOL' ? 'Number of Pillion Riders' : 'Select Number of Seats'}</span>
                 <span className="text-lavender-400 text-[11px] font-normal">Max {ride.seats_available}</span>
               </label>
               <div className="flex items-center space-x-3">
@@ -417,7 +457,7 @@ export const RideDetailPage: React.FC = () => {
                         : 'bg-[#16131D] text-gray-400 border-lavender-500/20 hover:text-white'
                     }`}
                   >
-                    {num}
+                    {num} {ride.ride_type === 'BIKEPOOL' ? 'Pillion' : ''}
                   </button>
                 ))}
               </div>

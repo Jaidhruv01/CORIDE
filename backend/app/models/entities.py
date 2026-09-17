@@ -65,14 +65,16 @@ class Vehicle(Base):
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
     owner_id = Column(String(36), ForeignKey("users.id"), nullable=False)
-    make = Column(String(50), nullable=False)  # e.g. Hyundai, Honda, Tata
-    model = Column(String(50), nullable=False)  # e.g. Creta, City, Nexon
+    vehicle_type = Column(String(30), default="CAR")  # CAR, BIKE
+    make = Column(String(50), nullable=False)  # e.g. Hyundai, Honda, Tata, Royal Enfield
+    model = Column(String(50), nullable=False)  # e.g. Creta, City, Nexon, Classic 350
     year = Column(Integer, nullable=True, default=2022)
     color = Column(String(30), nullable=False)
     registration_no = Column(String(50), unique=True, index=True, nullable=False)
     seats_total = Column(Integer, default=4, nullable=False)
     image_url = Column(String(500), nullable=True)
     ac = Column(Boolean, default=True)
+    helmet_provided = Column(Boolean, default=False)
     luggage_capacity = Column(String(30), default="MEDIUM")  # SMALL, MEDIUM, LARGE
     smoking_allowed = Column(Boolean, default=False)
     pets_allowed = Column(Boolean, default=False)
@@ -88,6 +90,7 @@ class Ride(Base):
     id = Column(String(36), primary_key=True, default=generate_uuid)
     driver_id = Column(String(36), ForeignKey("users.id"), nullable=False)
     vehicle_id = Column(String(36), ForeignKey("vehicles.id"), nullable=True)
+    ride_type = Column(String(30), default="CARPOOL")  # CARPOOL, BIKEPOOL
     origin_text = Column(String(200), nullable=False, index=True)
     destination_text = Column(String(200), nullable=False, index=True)
     origin_lat = Column(Float, nullable=False)
@@ -103,6 +106,7 @@ class Ride(Base):
     booking_mode = Column(String(30), default="INSTANT")  # INSTANT, APPROVAL
     luggage_size = Column(String(30), default="MEDIUM")  # SMALL, MEDIUM, LARGE
     ac = Column(Boolean, default=True)
+    helmet_provided = Column(Boolean, default=False)
     smoking_allowed = Column(Boolean, default=False)
     pets_allowed = Column(Boolean, default=False)
     women_only = Column(Boolean, default=False)

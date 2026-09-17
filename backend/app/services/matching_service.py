@@ -23,6 +23,8 @@ def search_rides(
     date_str: Optional[str] = None,
     seats: int = 1,
     max_price: Optional[float] = None,
+    ride_type: Optional[str] = None,
+    helmet_provided: Optional[bool] = None,
     ac: Optional[bool] = None,
     instant_only: Optional[bool] = None,
     women_only: Optional[bool] = None,
@@ -40,6 +42,9 @@ def search_rides(
         .filter(Ride.seats_available >= seats)
     )
 
+    if ride_type and ride_type.upper() in ["CARPOOL", "BIKEPOOL"]:
+        query = query.filter(Ride.ride_type == ride_type.upper())
+
     # Date filter
     if date_str and date_str.strip():
         parsed_date = None
@@ -54,7 +59,6 @@ def search_rides(
             start_of_day = datetime.combine(parsed_date, datetime.min.time())
             end_of_day = datetime.combine(parsed_date + timedelta(days=1), datetime.min.time())
             query = query.filter(Ride.departure_at >= start_of_day, Ride.departure_at < end_of_day)
-
 
     # Basic city / location filters
     all_rides = query.all()
@@ -88,6 +92,8 @@ def search_rides(
 
         # Feature filters
         if max_price is not None and ride.price_per_seat > max_price:
+            continue
+        if helmet_provided is True and not ride.helmet_provided:
             continue
         if ac is True and not ride.ac:
             continue

@@ -42,6 +42,8 @@ def create_ride(
         seats_available=ride_in.seats_total,
         price_per_seat=ride_in.price_per_seat,
         status="PUBLISHED",
+        ride_type=ride_in.ride_type or "CARPOOL",
+        helmet_provided=ride_in.helmet_provided,
         booking_mode=ride_in.booking_mode,
         luggage_size=ride_in.luggage_size,
         ac=ride_in.ac,

@@ -32,6 +32,7 @@ export const LandingPage: React.FC = () => {
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState('');
   const [seats, setSeats] = useState(1);
+  const [rideType, setRideType] = useState<string>('');
 
   const todayISO = getTodayISO();
   const tomorrowISO = getTomorrowISO();
@@ -44,6 +45,7 @@ export const LandingPage: React.FC = () => {
     if (destination) params.append('destination', destination);
     if (date) params.append('date', date);
     if (seats > 1) params.append('seats', seats.toString());
+    if (rideType) params.append('ride_type', rideType);
     navigate(`/search?${params.toString()}`);
   };
 
@@ -104,15 +106,52 @@ export const LandingPage: React.FC = () => {
         {/* Main Headline */}
         <h1 className="font-display font-extrabold text-4xl sm:text-6xl lg:text-7xl tracking-tight text-white max-w-4xl mx-auto leading-[1.1]">
           Share the Route. <br />
-          <span className="gradient-text-lavender">Share the Cost.</span>
+          <span className="gradient-text-lavender">Carpool & Bike Pool.</span>
         </h1>
 
         <p className="mt-6 text-base sm:text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
-          Connect with trusted, verified drivers and riders traveling along your corridor. Save up to 70% on travel expenses while reducing road congestion and carbon footprint.
+          Connect with trusted, verified car and motorcycle owners traveling along your corridor. Save up to 70% on travel expenses while reducing road congestion and carbon footprint.
         </p>
 
         {/* Hero Search Box */}
         <div className="mt-10 max-w-4xl mx-auto">
+          {/* Pool Mode Tab Buttons */}
+          <div className="flex items-center justify-center sm:justify-start gap-2 mb-3">
+            <button
+              type="button"
+              onClick={() => { setRideType(''); }}
+              className={`px-4 py-1.5 rounded-full text-xs font-bold border transition-all flex items-center gap-1.5 ${
+                !rideType
+                  ? 'bg-lavender-600 text-white border-lavender-400 shadow-glow-sm'
+                  : 'bg-[#16131D]/80 text-gray-400 border-lavender-500/20 hover:text-white'
+              }`}
+            >
+              <span>✨ All Rides</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setRideType('CARPOOL'); }}
+              className={`px-4 py-1.5 rounded-full text-xs font-bold border transition-all flex items-center gap-1.5 ${
+                rideType === 'CARPOOL'
+                  ? 'bg-lavender-600 text-white border-lavender-400 shadow-glow-sm'
+                  : 'bg-[#16131D]/80 text-gray-400 border-lavender-500/20 hover:text-white'
+              }`}
+            >
+              <span>🚗 Carpool</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setRideType('BIKEPOOL'); }}
+              className={`px-4 py-1.5 rounded-full text-xs font-bold border transition-all flex items-center gap-1.5 ${
+                rideType === 'BIKEPOOL'
+                  ? 'bg-emerald-600 text-white border-emerald-400 shadow-glow-sm'
+                  : 'bg-[#16131D]/80 text-gray-400 border-lavender-500/20 hover:text-white'
+              }`}
+            >
+              <span>🏍️ Bike Pool (2-Wheeler)</span>
+            </button>
+          </div>
+
           <form
             onSubmit={handleSearch}
             className="glass-panel p-3 sm:p-4 rounded-3xl border border-lavender-500/30 shadow-2xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-left"
@@ -169,7 +208,7 @@ export const LandingPage: React.FC = () => {
 
               <div className="p-3 rounded-2xl bg-[#16131D]/80 border border-lavender-500/15 focus-within:border-lavender-400 transition-colors">
                 <label className="text-[10px] uppercase font-bold text-lavender-300/80 flex items-center gap-1 mb-1">
-                  <Users className="w-3.5 h-3.5 text-lavender-400" /> Seats
+                  <Users className="w-3.5 h-3.5 text-lavender-400" /> {rideType === 'BIKEPOOL' ? 'Pillion' : 'Seats'}
                 </label>
                 <select
                   value={seats}
@@ -177,9 +216,13 @@ export const LandingPage: React.FC = () => {
                   className="w-full bg-transparent text-xs text-white font-medium focus:outline-none cursor-pointer"
                 >
                   <option value={1} className="bg-[#1E1B26]">1 Seat</option>
-                  <option value={2} className="bg-[#1E1B26]">2 Seats</option>
-                  <option value={3} className="bg-[#1E1B26]">3 Seats</option>
-                  <option value={4} className="bg-[#1E1B26]">4 Seats</option>
+                  {rideType !== 'BIKEPOOL' && (
+                    <>
+                      <option value={2} className="bg-[#1E1B26]">2 Seats</option>
+                      <option value={3} className="bg-[#1E1B26]">3 Seats</option>
+                      <option value={4} className="bg-[#1E1B26]">4 Seats</option>
+                    </>
+                  )}
                 </select>
               </div>
             </div>
@@ -438,17 +481,17 @@ export const LandingPage: React.FC = () => {
           
           <div className="space-y-4 max-w-xl text-left">
             <span className="bg-lavender-500/20 text-lavender-300 text-xs font-semibold px-3 py-1 rounded-full border border-lavender-500/30">
-              For Car Owners & Commuters
+              For Car & Two-Wheeler Owners
             </span>
             <h3 className="font-display font-bold text-3xl sm:text-4xl text-white">
-              Driving somewhere soon? <br />
-              <span className="text-lavender-300">Offset your fuel & toll costs.</span>
+              Driving or riding somewhere soon? <br />
+              <span className="text-lavender-300">Offset your fuel & toll expenses.</span>
             </h3>
             <p className="text-sm text-gray-300 leading-relaxed">
-              Publish your upcoming commute or weekend trip in 60 seconds. Set your seats, price, and passenger preferences.
+              Publish your upcoming car commute or motorcycle pillion ride in 60 seconds. Set your seats, price, and passenger preferences.
             </p>
             <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-gray-300">
-              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> Keep 92% of seat earnings</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> Keep 100% of seat contributions</span>
               <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> Instant automated payouts</span>
             </div>
           </div>

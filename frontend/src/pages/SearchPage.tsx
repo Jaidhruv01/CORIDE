@@ -47,6 +47,8 @@ export const SearchPage: React.FC = () => {
   const [seats, setSeats] = useState(initialSeats);
 
   // Filter State
+  const [rideType, setRideType] = useState<string>(searchParams.get('ride_type') || '');
+  const [helmetProvided, setHelmetProvided] = useState<boolean>(searchParams.get('helmet_provided') === 'true');
   const [maxPrice, setMaxPrice] = useState<number>(1000);
   const [instantOnly, setInstantOnly] = useState(false);
   const [acOnly, setAcOnly] = useState(false);
@@ -69,6 +71,8 @@ export const SearchPage: React.FC = () => {
       if (destination.trim()) params.append('destination', destination.trim());
       if (date) params.append('date', date);
       if (seats > 1) params.append('seats', seats.toString());
+      if (rideType) params.append('ride_type', rideType);
+      if (helmetProvided) params.append('helmet_provided', 'true');
       if (maxPrice < 1000) params.append('max_price', maxPrice.toString());
       if (instantOnly) params.append('instant_only', 'true');
       if (acOnly) params.append('ac', 'true');
@@ -87,7 +91,7 @@ export const SearchPage: React.FC = () => {
 
   useEffect(() => {
     fetchRides();
-  }, [origin, destination, date, seats, maxPrice, instantOnly, acOnly, womenOnly, luggageSize, sortBy]);
+  }, [origin, destination, date, seats, rideType, helmetProvided, maxPrice, instantOnly, acOnly, womenOnly, luggageSize, sortBy]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,11 +100,15 @@ export const SearchPage: React.FC = () => {
     if (destination) newParams.set('destination', destination);
     if (date) newParams.set('date', date);
     if (seats > 1) newParams.set('seats', seats.toString());
+    if (rideType) newParams.set('ride_type', rideType);
+    if (helmetProvided) newParams.set('helmet_provided', 'true');
     setSearchParams(newParams);
     fetchRides();
   };
 
   const resetFilters = () => {
+    setRideType('');
+    setHelmetProvided(false);
     setMaxPrice(1000);
     setInstantOnly(false);
     setAcOnly(false);
@@ -126,6 +134,44 @@ export const SearchPage: React.FC = () => {
       
       {/* Top Search Banner Form */}
       <div className="glass-panel p-4 rounded-3xl border border-lavender-500/20 shadow-xl">
+        {/* Pool Type Tabs (All vs Carpool vs Bikepool) */}
+        <div className="flex flex-wrap items-center gap-2 mb-3 pb-3 border-b border-lavender-500/10">
+          <span className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider mr-1">Pool Mode:</span>
+          <button
+            type="button"
+            onClick={() => setRideType('')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 ${
+              !rideType
+                ? 'bg-lavender-600 text-white border-lavender-400 shadow-glow-sm'
+                : 'bg-white/5 text-gray-400 border-white/5 hover:text-white'
+            }`}
+          >
+            <span>✨ All Pools</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setRideType('CARPOOL')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 ${
+              rideType === 'CARPOOL'
+                ? 'bg-lavender-600 text-white border-lavender-400 shadow-glow-sm'
+                : 'bg-white/5 text-gray-400 border-white/5 hover:text-white'
+            }`}
+          >
+            <span>🚗 Carpool</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setRideType('BIKEPOOL')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 ${
+              rideType === 'BIKEPOOL'
+                ? 'bg-emerald-600 text-white border-emerald-400 shadow-glow-sm'
+                : 'bg-white/5 text-gray-400 border-white/5 hover:text-white'
+            }`}
+          >
+            <span>🏍️ Bike Pool (Two-Wheeler)</span>
+          </button>
+        </div>
+
         <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           
           <div className="p-2.5 rounded-2xl bg-[#16131D] border border-lavender-500/15">
@@ -281,6 +327,31 @@ export const SearchPage: React.FC = () => {
               </button>
             </div>
 
+            {/* Ride Type Selector */}
+            <div className="space-y-2">
+              <label className="text-xs text-gray-300 font-semibold block">Vehicle & Pool Type</label>
+              <div className="grid grid-cols-3 gap-1.5 text-xs">
+                {[
+                  { id: '', label: 'All' },
+                  { id: 'CARPOOL', label: '🚗 Car' },
+                  { id: 'BIKEPOOL', label: '🏍️ Bike' },
+                ].map((type) => (
+                  <button
+                    key={type.id}
+                    type="button"
+                    onClick={() => setRideType(type.id)}
+                    className={`py-2 px-1 rounded-xl border text-center font-semibold transition-all text-xs ${
+                      rideType === type.id
+                        ? 'bg-lavender-500/20 border-lavender-400 text-lavender-300 shadow-glow-sm'
+                        : 'bg-white/5 border-white/5 text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    {type.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* Sort Options */}
             <div className="space-y-2">
               <label className="text-xs text-gray-300 font-semibold block">Sort By</label>
@@ -303,15 +374,15 @@ export const SearchPage: React.FC = () => {
               </div>
               <input
                 type="range"
-                min={100}
+                min={50}
                 max={1000}
-                step={20}
+                step={10}
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(Number(e.target.value))}
                 className="w-full accent-lavender-500 cursor-pointer"
               />
               <div className="flex justify-between text-[10px] text-gray-500">
-                <span>₹100</span>
+                <span>₹50</span>
                 <span>₹1,000</span>
               </div>
             </div>
@@ -320,6 +391,18 @@ export const SearchPage: React.FC = () => {
             <div className="space-y-3 pt-2">
               <label className="text-xs text-gray-300 font-semibold block">Preferences & Amenities</label>
               
+              <label className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                <span className="text-xs text-emerald-300 flex items-center gap-2">
+                  🪖 Helmet Provided
+                </span>
+                <input
+                  type="checkbox"
+                  checked={helmetProvided}
+                  onChange={(e) => setHelmetProvided(e.target.checked)}
+                  className="w-4 h-4 accent-emerald-500 rounded"
+                />
+              </label>
+
               <label className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
                 <span className="text-xs text-gray-200 flex items-center gap-2">
                   <Zap className="w-3.5 h-3.5 text-emerald-400" /> Instant Booking Only

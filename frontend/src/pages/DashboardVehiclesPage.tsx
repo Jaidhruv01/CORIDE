@@ -21,12 +21,14 @@ export const DashboardVehiclesPage: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
 
   // Form State
+  const [vehicleType, setVehicleType] = useState<'CAR' | 'BIKE'>('CAR');
   const [make, setMake] = useState('Hyundai');
   const [model, setModel] = useState('Creta');
   const [year, setYear] = useState(2024);
   const [color, setColor] = useState('Knight Black');
   const [registrationNo, setRegistrationNo] = useState('');
   const [seatsTotal, setSeatsTotal] = useState(4);
+  const [helmetProvided, setHelmetProvided] = useState(true);
   const [ac, setAc] = useState(true);
   const [luggageCapacity, setLuggageCapacity] = useState('MEDIUM');
   const [smokingAllowed, setSmokingAllowed] = useState(false);
@@ -48,6 +50,27 @@ export const DashboardVehiclesPage: React.FC = () => {
     fetchVehicles();
   }, []);
 
+  const handleTypeSelect = (type: 'CAR' | 'BIKE') => {
+    setVehicleType(type);
+    if (type === 'BIKE') {
+      setMake('Royal Enfield');
+      setModel('Classic 350');
+      setColor('Stealth Black');
+      setSeatsTotal(1);
+      setAc(false);
+      setLuggageCapacity('SMALL');
+      setHelmetProvided(true);
+    } else {
+      setMake('Hyundai');
+      setModel('Creta');
+      setColor('Knight Black');
+      setSeatsTotal(4);
+      setAc(true);
+      setLuggageCapacity('MEDIUM');
+      setHelmetProvided(false);
+    }
+  };
+
   const handleAddVehicle = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!registrationNo.trim()) return;
@@ -55,17 +78,21 @@ export const DashboardVehiclesPage: React.FC = () => {
     setSubmitting(true);
     try {
       await api.post('/vehicles', {
+        vehicle_type: vehicleType,
         make,
         model,
         year,
         color,
         registration_no: registrationNo.toUpperCase().trim(),
         seats_total: seatsTotal,
-        ac,
+        helmet_provided: vehicleType === 'BIKE' ? helmetProvided : false,
+        ac: vehicleType === 'BIKE' ? false : ac,
         luggage_capacity: luggageCapacity,
         smoking_allowed: smokingAllowed,
         pets_allowed: petsAllowed,
-        image_url: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=800&q=80',
+        image_url: vehicleType === 'BIKE'
+          ? 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80'
+          : 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=800&q=80',
       });
 
       setShowAddModal(false);
@@ -97,14 +124,14 @@ export const DashboardVehiclesPage: React.FC = () => {
           <h2 className="font-display font-bold text-2xl text-white flex items-center gap-2">
             <SlidersHorizontal className="w-6 h-6 text-lavender-400" /> My Registered Vehicles
           </h2>
-          <p className="text-xs text-gray-400">Manage cars and vehicle specifications for your published carpooling rides</p>
+          <p className="text-xs text-gray-400">Manage cars and two-wheelers for your carpool and bike pool rides</p>
         </div>
 
         <button
           onClick={() => setShowAddModal(true)}
           className="btn-primary px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5"
         >
-          <Plus className="w-4 h-4" /> Add Vehicle
+          <Plus className="w-4 h-4" /> Add Vehicle / Bike
         </button>
       </div>
 
@@ -113,12 +140,12 @@ export const DashboardVehiclesPage: React.FC = () => {
         <div className="py-12 text-center text-gray-400 text-xs">Loading vehicles...</div>
       ) : vehicles.length === 0 ? (
         <div className="py-12 text-center text-gray-400 text-xs space-y-3">
-          <p>No vehicles added yet. Add your vehicle to begin offering rides as a driver.</p>
+          <p>No vehicles added yet. Add your car or bike to begin offering rides as a driver.</p>
           <button
             onClick={() => setShowAddModal(true)}
             className="btn-primary inline-block px-4 py-2 rounded-xl text-xs font-semibold"
           >
-            Add Your Car Now
+            Add Your Vehicle Now
           </button>
         </div>
       ) : (
@@ -131,6 +158,7 @@ export const DashboardVehiclesPage: React.FC = () => {
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2">
+                    <span className="text-lg">{v.vehicle_type === 'BIKE' ? '🏍️' : '🚗'}</span>
                     <h3 className="font-bold text-white text-base">{v.make} {v.model}</h3>
                     <span className="bg-emerald-500/15 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
                       <ShieldCheck className="w-3 h-3" /> {v.verified}
@@ -156,12 +184,32 @@ export const DashboardVehiclesPage: React.FC = () => {
               </div>
 
               <div className="flex flex-wrap gap-2 text-[11px] text-gray-300 pt-1">
+                <span className={`px-2.5 py-1 rounded-lg border font-semibold ${
+                  v.vehicle_type === 'BIKE'
+                    ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                    : 'bg-lavender-500/15 text-lavender-300 border-lavender-500/30'
+                }`}>
+                  {v.vehicle_type === 'BIKE' ? '🏍️ Two-Wheeler / Bike' : '🚗 Four-Wheeler / Car'}
+                </span>
+
                 <span className="bg-[#16131D] px-2.5 py-1 rounded-lg border border-lavender-500/20">
-                  👥 {v.seats_total} Passenger Seats
+                  👥 {v.seats_total} {v.vehicle_type === 'BIKE' ? 'Pillion Seat' : 'Seats'}
                 </span>
-                <span className="bg-[#16131D] px-2.5 py-1 rounded-lg border border-lavender-500/20 text-lavender-300">
-                  ❄️ {v.ac ? 'Air Conditioned' : 'Non-AC'}
-                </span>
+
+                {v.vehicle_type === 'BIKE' ? (
+                  <span className={`px-2.5 py-1 rounded-lg border ${
+                    v.helmet_provided
+                      ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                      : 'bg-[#16131D] text-gray-400 border-lavender-500/20'
+                  }`}>
+                    🪖 {v.helmet_provided ? 'Helmet Provided' : 'No Spare Helmet'}
+                  </span>
+                ) : (
+                  <span className="bg-[#16131D] px-2.5 py-1 rounded-lg border border-lavender-500/20 text-lavender-300">
+                    ❄️ {v.ac ? 'Air Conditioned' : 'Non-AC'}
+                  </span>
+                )}
+
                 <span className="bg-[#16131D] px-2.5 py-1 rounded-lg border border-lavender-500/20">
                   🧳 {v.luggage_capacity} Luggage
                 </span>
@@ -174,7 +222,7 @@ export const DashboardVehiclesPage: React.FC = () => {
       {/* Add Vehicle Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-          <div className="relative w-full max-w-lg rounded-3xl bg-[#1E1B26] border border-lavender-500/30 shadow-2xl p-6 sm:p-8 text-white space-y-5 text-left">
+          <div className="relative w-full max-w-lg rounded-3xl bg-[#1E1B26] border border-lavender-500/30 shadow-2xl p-6 sm:p-8 text-white space-y-5 text-left max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setShowAddModal(false)}
               className="absolute top-4 right-4 p-2 rounded-full bg-white/5 text-gray-400 hover:text-white"
@@ -184,7 +232,43 @@ export const DashboardVehiclesPage: React.FC = () => {
 
             <div>
               <h3 className="font-display font-bold text-xl text-white">Register New Vehicle</h3>
-              <p className="text-xs text-gray-400 mt-0.5">Enter details of the car you will use for published rides</p>
+              <p className="text-xs text-gray-400 mt-0.5">Enter details of the car or two-wheeler you will use for published rides</p>
+            </div>
+
+            {/* Vehicle Type Switcher */}
+            <div className="space-y-1.5 text-xs">
+              <label className="text-gray-300 font-semibold block">Vehicle Category</label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleTypeSelect('CAR')}
+                  className={`p-3 rounded-2xl border text-left transition-all ${
+                    vehicleType === 'CAR'
+                      ? 'bg-lavender-500/20 border-lavender-400 text-white shadow-glow-sm'
+                      : 'bg-[#16131D] border-lavender-500/20 text-gray-400 hover:text-white'
+                  }`}
+                >
+                  <div className="flex items-center gap-1.5 font-bold text-xs mb-0.5">
+                    <span>🚗</span> Four-Wheeler (Car)
+                  </div>
+                  <span className="text-[10px] text-gray-400 block">Sedan, SUV, Hatchback</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleTypeSelect('BIKE')}
+                  className={`p-3 rounded-2xl border text-left transition-all ${
+                    vehicleType === 'BIKE'
+                      ? 'bg-emerald-500/20 border-emerald-400 text-white shadow-glow-sm'
+                      : 'bg-[#16131D] border-lavender-500/20 text-gray-400 hover:text-white'
+                  }`}
+                >
+                  <div className="flex items-center gap-1.5 font-bold text-xs text-emerald-300 mb-0.5">
+                    <span>🏍️</span> Two-Wheeler (Bike)
+                  </div>
+                  <span className="text-[10px] text-gray-400 block">Motorcycle, Scooter, EV</span>
+                </button>
+              </div>
             </div>
 
             <form onSubmit={handleAddVehicle} className="space-y-4 text-xs">
@@ -194,7 +278,7 @@ export const DashboardVehiclesPage: React.FC = () => {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Tata, Hyundai, Honda"
+                    placeholder={vehicleType === 'BIKE' ? 'e.g. Royal Enfield, Honda, Yamaha' : 'e.g. Tata, Hyundai, Honda'}
                     value={make}
                     onChange={(e) => setMake(e.target.value)}
                     className="w-full p-3 rounded-xl bg-[#16131D] border border-lavender-500/20 text-white focus:outline-none"
@@ -205,7 +289,7 @@ export const DashboardVehiclesPage: React.FC = () => {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Nexon EV, City, Creta"
+                    placeholder={vehicleType === 'BIKE' ? 'e.g. Classic 350, Activa 6G' : 'e.g. Nexon EV, City, Creta'}
                     value={model}
                     onChange={(e) => setModel(e.target.value)}
                     className="w-full p-3 rounded-xl bg-[#16131D] border border-lavender-500/20 text-white focus:outline-none"
@@ -233,11 +317,13 @@ export const DashboardVehiclesPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="text-gray-300 font-semibold block mb-1">Max Seats</label>
+                  <label className="text-gray-300 font-semibold block mb-1">
+                    {vehicleType === 'BIKE' ? 'Pillion Seats' : 'Max Seats'}
+                  </label>
                   <input
                     type="number"
                     min="1"
-                    max="8"
+                    max={vehicleType === 'BIKE' ? 1 : 8}
                     value={seatsTotal}
                     onChange={(e) => setSeatsTotal(Number(e.target.value))}
                     className="w-full p-3 rounded-xl bg-[#16131D] border border-lavender-500/20 text-white focus:outline-none"
@@ -250,34 +336,50 @@ export const DashboardVehiclesPage: React.FC = () => {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. KA01AB1234 or DL04CD5678"
+                  placeholder="e.g. KA01AB1234 or MH12CD5678"
                   value={registrationNo}
                   onChange={(e) => setRegistrationNo(e.target.value)}
                   className="w-full p-3 rounded-xl bg-[#16131D] border border-lavender-500/20 text-white font-mono uppercase focus:outline-none"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setAc(!ac)}
-                  className={`p-3 rounded-xl border text-center font-medium transition-all ${
-                    ac ? 'bg-lavender-500/20 border-lavender-400 text-lavender-200' : 'bg-white/5 border-white/5 text-gray-400'
-                  }`}
-                >
-                  ❄️ AC: {ac ? 'Enabled' : 'Disabled'}
-                </button>
+              {vehicleType === 'BIKE' ? (
+                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                  <label className="flex items-center justify-between cursor-pointer">
+                    <span className="text-xs text-emerald-300 font-bold">
+                      🪖 Extra Helmet Provided for Pillion Rider
+                    </span>
+                    <input
+                      type="checkbox"
+                      checked={helmetProvided}
+                      onChange={(e) => setHelmetProvided(e.target.checked)}
+                      className="w-4 h-4 accent-emerald-500 rounded cursor-pointer"
+                    />
+                  </label>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setAc(!ac)}
+                    className={`p-3 rounded-xl border text-center font-medium transition-all ${
+                      ac ? 'bg-lavender-500/20 border-lavender-400 text-lavender-200' : 'bg-white/5 border-white/5 text-gray-400'
+                    }`}
+                  >
+                    ❄️ AC: {ac ? 'Enabled' : 'Disabled'}
+                  </button>
 
-                <button
-                  type="button"
-                  onClick={() => setPetsAllowed(!petsAllowed)}
-                  className={`p-3 rounded-xl border text-center font-medium transition-all ${
-                    petsAllowed ? 'bg-lavender-500/20 border-lavender-400 text-amber-300' : 'bg-white/5 border-white/5 text-gray-400'
-                  }`}
-                >
-                  🐾 Pets: {petsAllowed ? 'Allowed' : 'No'}
-                </button>
-              </div>
+                  <button
+                    type="button"
+                    onClick={() => setPetsAllowed(!petsAllowed)}
+                    className={`p-3 rounded-xl border text-center font-medium transition-all ${
+                      petsAllowed ? 'bg-lavender-500/20 border-lavender-400 text-amber-300' : 'bg-white/5 border-white/5 text-gray-400'
+                    }`}
+                  >
+                    🐾 Pets: {petsAllowed ? 'Allowed' : 'No'}
+                  </button>
+                </div>
+              )}
 
               <div className="pt-2 flex justify-end gap-2">
                 <button

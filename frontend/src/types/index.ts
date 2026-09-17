@@ -32,6 +32,7 @@ export interface UserPublic {
 export interface Vehicle {
   id: string;
   owner_id: string;
+  vehicle_type?: 'CAR' | 'BIKE';
   make: string;
   model: string;
   year?: number;
@@ -40,6 +41,7 @@ export interface Vehicle {
   seats_total: number;
   image_url?: string;
   ac: boolean;
+  helmet_provided?: boolean;
   luggage_capacity: string;
   smoking_allowed: boolean;
   pets_allowed: boolean;
@@ -66,6 +68,7 @@ export interface Ride {
   id: string;
   driver_id: string;
   vehicle_id?: string;
+  ride_type?: 'CARPOOL' | 'BIKEPOOL';
   origin_text: string;
   destination_text: string;
   origin_lat: number;
@@ -81,6 +84,7 @@ export interface Ride {
   booking_mode: 'INSTANT' | 'APPROVAL';
   luggage_size: 'SMALL' | 'MEDIUM' | 'LARGE';
   ac: boolean;
+  helmet_provided?: boolean;
   smoking_allowed: boolean;
   pets_allowed: boolean;
   women_only: boolean;

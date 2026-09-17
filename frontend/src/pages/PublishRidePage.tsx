@@ -66,6 +66,8 @@ export const PublishRidePage: React.FC = () => {
 
 
   // Step 3: Vehicle & Pricing
+  const [rideType, setRideType] = useState<'CARPOOL' | 'BIKEPOOL'>('CARPOOL');
+  const [helmetProvided, setHelmetProvided] = useState(true);
   const [selectedVehicleId, setSelectedVehicleId] = useState('');
   const [seatsTotal, setSeatsTotal] = useState(3);
   const [pricePerSeat, setPricePerSeat] = useState(320);
@@ -77,7 +79,7 @@ export const PublishRidePage: React.FC = () => {
   const [smokingAllowed, setSmokingAllowed] = useState(false);
   const [petsAllowed, setPetsAllowed] = useState(false);
   const [womenOnly, setWomenOnly] = useState(false);
-  const [notes, setNotes] = useState('Clean car, smooth highway commute. Happy to stop briefly for coffee.');
+  const [notes, setNotes] = useState('Smooth highway commute. Clean vehicle and safe driving assured.');
 
   useEffect(() => {
     if (!user) {
@@ -92,6 +94,12 @@ export const PublishRidePage: React.FC = () => {
         setVehicles(data);
         if (data.length > 0) {
           setSelectedVehicleId(data[0].id);
+          if (data[0].vehicle_type === 'BIKE') {
+            setRideType('BIKEPOOL');
+            setSeatsTotal(1);
+            setPricePerSeat(140);
+            setAc(false);
+          }
         }
       } catch (err) {
         console.error(err);
@@ -101,8 +109,27 @@ export const PublishRidePage: React.FC = () => {
     fetchVehicles();
   }, [user]);
 
+  const handleRideTypeChange = (type: 'CARPOOL' | 'BIKEPOOL') => {
+    setRideType(type);
+    if (type === 'BIKEPOOL') {
+      setSeatsTotal(1);
+      setPricePerSeat(140);
+      setAc(false);
+      setLuggageSize('SMALL');
+      const bikeVeh = vehicles.find(v => v.vehicle_type === 'BIKE');
+      if (bikeVeh) setSelectedVehicleId(bikeVeh.id);
+    } else {
+      setSeatsTotal(3);
+      setPricePerSeat(320);
+      setAc(true);
+      setLuggageSize('MEDIUM');
+      const carVeh = vehicles.find(v => v.vehicle_type !== 'BIKE');
+      if (carVeh) setSelectedVehicleId(carVeh.id);
+    }
+  };
+
   const addStop = () => {
-    setStops([...stops, { place_name: '', lat: 12.72, lng: 77.28, price_from_origin: 150 }]);
+    setStops([...stops, { place_name: '', lat: 12.72, lng: 77.28, price_from_origin: rideType === 'BIKEPOOL' ? 70 : 150 }]);
   };
 
   const removeStop = (index: number) => {
@@ -129,7 +156,6 @@ export const PublishRidePage: React.FC = () => {
       }
       const arrivalDateTime = new Date(departureDateTime.getTime() + estimatedDurationHours * 3600 * 1000);
 
-
       const payload = {
         origin_text: origin,
         destination_text: destination,
@@ -141,9 +167,11 @@ export const PublishRidePage: React.FC = () => {
         estimated_arrival: arrivalDateTime.toISOString(),
         seats_total: seatsTotal,
         price_per_seat: pricePerSeat,
+        ride_type: rideType,
+        helmet_provided: rideType === 'BIKEPOOL' ? helmetProvided : false,
         booking_mode: bookingMode,
         luggage_size: luggageSize,
-        ac,
+        ac: rideType === 'BIKEPOOL' ? false : ac,
         smoking_allowed: smokingAllowed,
         pets_allowed: petsAllowed,
         women_only: womenOnly,
@@ -483,9 +511,49 @@ export const PublishRidePage: React.FC = () => {
         {/* STEP 3: Vehicle & Pricing */}
         {step === 3 && (
           <div className="space-y-6 animate-in fade-in">
-            <h3 className="font-display font-bold text-lg text-white flex items-center gap-2">
-              <Car className="w-5 h-5 text-lavender-400" /> Vehicle & Pricing
-            </h3>
+            <div className="flex items-center justify-between">
+              <h3 className="font-display font-bold text-lg text-white flex items-center gap-2">
+                {rideType === 'BIKEPOOL' ? '🏍️' : <Car className="w-5 h-5 text-lavender-400" />} Vehicle & Ride Mode
+              </h3>
+            </div>
+
+            {/* Ride Type Switcher */}
+            <div className="space-y-2 text-left">
+              <label className="text-xs text-gray-300 font-semibold">Choose Pooling Mode</label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleRideTypeChange('CARPOOL')}
+                  className={`p-4 rounded-2xl border text-left transition-all ${
+                    rideType === 'CARPOOL'
+                      ? 'bg-lavender-500/20 border-lavender-400 text-white shadow-glow-sm'
+                      : 'bg-[#16131D] border-lavender-500/20 text-gray-400 hover:text-white'
+                  }`}
+                >
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-lg">🚗</span>
+                    <span className="font-bold text-sm text-white">Carpool</span>
+                  </div>
+                  <span className="text-[11px] text-gray-400 block">Offer 1 to 4 passenger seats in your car or cab.</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleRideTypeChange('BIKEPOOL')}
+                  className={`p-4 rounded-2xl border text-left transition-all ${
+                    rideType === 'BIKEPOOL'
+                      ? 'bg-emerald-500/20 border-emerald-400 text-white shadow-glow-sm'
+                      : 'bg-[#16131D] border-lavender-500/20 text-gray-400 hover:text-white'
+                  }`}
+                >
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-lg">🏍️</span>
+                    <span className="font-bold text-sm text-emerald-300">Bike Pool (2-Wheeler)</span>
+                  </div>
+                  <span className="text-[11px] text-gray-400 block">Offer your rear pillion seat for quick, eco-friendly commutes.</span>
+                </button>
+              </div>
+            </div>
 
             {/* Vehicle Selector */}
             <div className="space-y-1.5 text-left">
@@ -493,28 +561,63 @@ export const PublishRidePage: React.FC = () => {
               {vehicles.length > 0 ? (
                 <select
                   value={selectedVehicleId}
-                  onChange={(e) => setSelectedVehicleId(e.target.value)}
+                  onChange={(e) => {
+                    setSelectedVehicleId(e.target.value);
+                    const selected = vehicles.find(v => v.id === e.target.value);
+                    if (selected && selected.vehicle_type === 'BIKE') {
+                      setRideType('BIKEPOOL');
+                      setSeatsTotal(1);
+                      setPricePerSeat(140);
+                      setAc(false);
+                    } else if (selected && selected.vehicle_type === 'CAR') {
+                      setRideType('CARPOOL');
+                    }
+                  }}
                   className="w-full p-3.5 rounded-xl bg-[#16131D] border border-lavender-500/20 text-xs text-white focus:outline-none"
                 >
                   {vehicles.map((v) => (
                     <option key={v.id} value={v.id}>
-                      {v.make} {v.model} ({v.registration_no}) - {v.seats_total} Seats
+                      {v.vehicle_type === 'BIKE' ? '🏍️' : '🚗'} {v.make} {v.model} ({v.registration_no}) - {v.seats_total} Seats
                     </option>
                   ))}
                 </select>
               ) : (
                 <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-gray-300 flex items-center justify-between">
-                  <span>Using standard 4-seater car profile</span>
+                  <span>{rideType === 'BIKEPOOL' ? 'Using standard 2-wheeler motorcycle profile' : 'Using standard 4-seater car profile'}</span>
                 </div>
               )}
             </div>
 
+            {/* Bike Pool Helmet Toggle Option */}
+            {rideType === 'BIKEPOOL' && (
+              <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 space-y-2 text-left">
+                <label className="flex items-center justify-between cursor-pointer">
+                  <div className="space-y-0.5">
+                    <span className="text-xs font-bold text-emerald-300 flex items-center gap-1.5">
+                      🪖 Spare Helmet Provided for Pillion Rider
+                    </span>
+                    <p className="text-[11px] text-gray-400">
+                      Do you have a clean, ISI-certified extra helmet for your co-rider?
+                    </p>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={helmetProvided}
+                    onChange={(e) => setHelmetProvided(e.target.checked)}
+                    className="w-5 h-5 accent-emerald-500 rounded cursor-pointer"
+                  />
+                </label>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Seats offered */}
               <div className="space-y-1.5 text-left">
-                <label className="text-xs text-gray-300 font-semibold">Available Empty Seats Offered</label>
+                <label className="text-xs text-gray-300 font-semibold">
+                  {rideType === 'BIKEPOOL' ? 'Available Pillion Seats' : 'Available Empty Seats Offered'}
+                </label>
                 <div className="flex gap-2">
-                  {[1, 2, 3, 4].map((num) => (
+                  {(rideType === 'BIKEPOOL' ? [1] : [1, 2, 3, 4]).map((num) => (
                     <button
                       key={num}
                       type="button"
@@ -525,7 +628,7 @@ export const PublishRidePage: React.FC = () => {
                           : 'bg-[#16131D] text-gray-400 border-lavender-500/20'
                       }`}
                     >
-                      {num}
+                      {num} {rideType === 'BIKEPOOL' ? 'Pillion Seat' : ''}
                     </button>
                   ))}
                 </div>
@@ -538,7 +641,7 @@ export const PublishRidePage: React.FC = () => {
                   <span className="text-sm text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 font-bold">₹</span>
                   <input
                     type="number"
-                    min="50"
+                    min="30"
                     step="10"
                     value={pricePerSeat}
                     onChange={(e) => setPricePerSeat(Number(e.target.value))}
@@ -546,7 +649,9 @@ export const PublishRidePage: React.FC = () => {
                   />
                 </div>
                 <span className="text-[10px] text-emerald-400">
-                  Recommended corridor benchmark: ₹280 - ₹360
+                  {rideType === 'BIKEPOOL'
+                    ? 'Recommended bike pool benchmark: ₹90 - ₹180'
+                    : 'Recommended carpool benchmark: ₹280 - ₹360'}
                 </span>
               </div>
             </div>
@@ -598,15 +703,25 @@ export const PublishRidePage: React.FC = () => {
 
             {/* Amenities Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs text-left">
-              <button
-                type="button"
-                onClick={() => setAc(!ac)}
-                className={`p-3 rounded-xl border text-center font-medium transition-all ${
-                  ac ? 'bg-lavender-500/20 border-lavender-400 text-lavender-200' : 'bg-white/5 border-white/5 text-gray-400'
-                }`}
-              >
-                ❄️ AC: {ac ? 'On' : 'Off'}
-              </button>
+              {rideType === 'BIKEPOOL' ? (
+                <div
+                  className={`p-3 rounded-xl border text-center font-medium ${
+                    helmetProvided ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300' : 'bg-white/5 border-white/5 text-gray-400'
+                  }`}
+                >
+                  🪖 Helmet: {helmetProvided ? 'Provided' : 'Rider Brings Own'}
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setAc(!ac)}
+                  className={`p-3 rounded-xl border text-center font-medium transition-all ${
+                    ac ? 'bg-lavender-500/20 border-lavender-400 text-lavender-200' : 'bg-white/5 border-white/5 text-gray-400'
+                  }`}
+                >
+                  ❄️ AC: {ac ? 'On' : 'Off'}
+                </button>
+              )}
 
               <button
                 type="button"
@@ -667,16 +782,28 @@ export const PublishRidePage: React.FC = () => {
                 rows={3}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="Mention pickup landmark, music preference, luggage details..."
+                placeholder="Mention pickup landmark, route highlights, helmet details..."
                 className="w-full p-3 rounded-xl bg-[#16131D] border border-lavender-500/20 text-xs text-white focus:outline-none"
               />
             </div>
 
             {/* Summary Review Strip */}
             <div className="p-4 rounded-2xl bg-lavender-500/10 border border-lavender-500/20 text-left text-xs space-y-2">
-              <span className="font-bold text-lavender-300 block">Published Summary:</span>
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-lavender-300 block">Published Summary:</span>
+                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
+                  rideType === 'BIKEPOOL'
+                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+                    : 'bg-lavender-500/20 text-lavender-300 border-lavender-500/30'
+                }`}>
+                  {rideType === 'BIKEPOOL' ? '🏍️ BIKE POOL' : '🚗 CARPOOL'}
+                </span>
+              </div>
               <p className="text-white font-semibold">{origin} ➔ {destination}</p>
-              <p className="text-gray-300">{departureDate} at {departureTime} • {seatsTotal} Seats • ₹{pricePerSeat} / seat</p>
+              <p className="text-gray-300">
+                {departureDate} at {departureTime} • {seatsTotal} {rideType === 'BIKEPOOL' ? 'Pillion Seat' : 'Seats'} • ₹{pricePerSeat} / seat
+                {rideType === 'BIKEPOOL' && (helmetProvided ? ' • 🪖 Helmet Provided' : ' • 🪖 Bring Own Helmet')}
+              </p>
             </div>
           </div>
         )}

@@ -95,6 +95,7 @@ class UserPublicOut(BaseModel):
 
 # --- Vehicle Schemas ---
 class VehicleBase(BaseModel):
+    vehicle_type: str = "CAR"  # CAR, BIKE
     make: str
     model: str
     year: Optional[int] = 2023
@@ -103,6 +104,7 @@ class VehicleBase(BaseModel):
     seats_total: int = 4
     image_url: Optional[str] = None
     ac: bool = True
+    helmet_provided: bool = False
     luggage_capacity: str = "MEDIUM"
     smoking_allowed: bool = False
     pets_allowed: bool = False
@@ -113,6 +115,7 @@ class VehicleCreate(VehicleBase):
 
 
 class VehicleUpdate(BaseModel):
+    vehicle_type: Optional[str] = None
     make: Optional[str] = None
     model: Optional[str] = None
     year: Optional[int] = None
@@ -121,6 +124,7 @@ class VehicleUpdate(BaseModel):
     seats_total: Optional[int] = None
     image_url: Optional[str] = None
     ac: Optional[bool] = None
+    helmet_provided: Optional[bool] = None
     luggage_capacity: Optional[str] = None
     smoking_allowed: Optional[bool] = None
     pets_allowed: Optional[bool] = None
@@ -160,6 +164,7 @@ class RideStopOut(RideStopBase):
 
 # --- Ride Schemas ---
 class RideBase(BaseModel):
+    ride_type: str = "CARPOOL"  # CARPOOL, BIKEPOOL
     origin_text: str
     destination_text: str
     origin_lat: float
@@ -173,6 +178,7 @@ class RideBase(BaseModel):
     booking_mode: str = "INSTANT"
     luggage_size: str = "MEDIUM"
     ac: bool = True
+    helmet_provided: bool = False
     smoking_allowed: bool = False
     pets_allowed: bool = False
     women_only: bool = False
@@ -185,11 +191,13 @@ class RideCreate(RideBase):
 
 
 class RideUpdate(BaseModel):
+    ride_type: Optional[str] = None
     departure_at: Optional[datetime] = None
     estimated_arrival: Optional[datetime] = None
     seats_available: Optional[int] = None
     price_per_seat: Optional[float] = None
     status: Optional[str] = None
+    helmet_provided: Optional[bool] = None
     notes: Optional[str] = None
     current_lat: Optional[float] = None
     current_lng: Optional[float] = None

@@ -48,6 +48,20 @@ export const RideCard: React.FC<RideCardProps> = ({ ride }) => {
 
 
         <div className="flex items-center space-x-2">
+          {ride.ride_type === 'BIKEPOOL' ? (
+            <span className="inline-flex items-center gap-1 text-[11px] font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 px-2.5 py-0.5 rounded-full shadow-sm">
+              🏍️ Bike Pool
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1 text-[11px] font-semibold bg-lavender-500/10 text-lavender-300 border border-lavender-500/20 px-2 py-0.5 rounded-full">
+              🚗 Carpool
+            </span>
+          )}
+          {ride.helmet_provided && (
+            <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full">
+              🪖 Helmet Provided
+            </span>
+          )}
           {ride.booking_mode === 'INSTANT' && (
             <span className="inline-flex items-center gap-1 text-[11px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">
               <Zap className="w-3 h-3 text-emerald-400" /> Instant Book
@@ -64,7 +78,7 @@ export const RideCard: React.FC<RideCardProps> = ({ ride }) => {
               : 'bg-rose-500/15 text-rose-300 border border-rose-500/30 animate-pulse'
           }`}>
             <Users className="w-3 h-3 inline mr-1" />
-            {ride.seats_available} seat{ride.seats_available > 1 ? 's' : ''} left
+            {ride.seats_available} {ride.ride_type === 'BIKEPOOL' ? 'pillion seat' : `seat${ride.seats_available > 1 ? 's' : ''}`} left
           </span>
         </div>
       </div>
@@ -166,10 +180,10 @@ export const RideCard: React.FC<RideCardProps> = ({ ride }) => {
         <div className="flex items-center space-x-2 text-gray-400 text-[11px]">
           {vehicle && (
             <span className="bg-[#16131D] px-2.5 py-1 rounded-lg border border-lavender-500/20 text-gray-300 font-medium">
-              🚗 {vehicle.make} {vehicle.model}
+              {vehicle.vehicle_type === 'BIKE' || ride.ride_type === 'BIKEPOOL' ? '🏍️' : '🚗'} {vehicle.make} {vehicle.model}
             </span>
           )}
-          {ride.ac && (
+          {ride.ac && ride.ride_type !== 'BIKEPOOL' && (
             <span className="bg-[#16131D] px-2 py-1 rounded-lg border border-lavender-500/20 text-lavender-300 flex items-center gap-1">
               <Wind className="w-3 h-3 text-lavender-400" /> AC
             </span>

@@ -28,14 +28,20 @@ def create_vehicle(
 
     vehicle = Vehicle(
         owner_id=current_user.id,
+        vehicle_type=veh_in.vehicle_type or "CAR",
         make=veh_in.make,
         model=veh_in.model,
         year=veh_in.year or 2023,
         color=veh_in.color,
         registration_no=veh_in.registration_no.upper().strip(),
         seats_total=veh_in.seats_total,
-        image_url=veh_in.image_url or "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=800&q=80",
-        ac=veh_in.ac,
+        helmet_provided=veh_in.helmet_provided or False,
+        image_url=veh_in.image_url or (
+            "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80"
+            if veh_in.vehicle_type == "BIKE"
+            else "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=800&q=80"
+        ),
+        ac=veh_in.ac if veh_in.vehicle_type != "BIKE" else False,
         luggage_capacity=veh_in.luggage_capacity,
         smoking_allowed=veh_in.smoking_allowed,
         pets_allowed=veh_in.pets_allowed,

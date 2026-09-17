@@ -173,6 +173,7 @@ def seed_database():
         veh_tesla = Vehicle(
             id="veh-tesla-03",
             owner_id=driver_sarah.id,
+            vehicle_type="CAR",
             make="Tesla",
             model="Model 3",
             year=2023,
@@ -181,12 +182,53 @@ def seed_database():
             seats_total=3,
             image_url="https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&w=800&q=80",
             ac=True,
+            helmet_provided=False,
             luggage_capacity="MEDIUM",
             smoking_allowed=False,
             pets_allowed=False,
             verified="VERIFIED"
         )
         db.add(veh_tesla)
+
+        veh_bike_re = Vehicle(
+            id="veh-re-04",
+            owner_id=driver_priya.id,
+            vehicle_type="BIKE",
+            make="Royal Enfield",
+            model="Classic 350 Reborn",
+            year=2024,
+            color="Stealth Black",
+            registration_no="KA05RE3500",
+            seats_total=1,
+            image_url="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80",
+            ac=False,
+            helmet_provided=True,
+            luggage_capacity="SMALL",
+            smoking_allowed=False,
+            pets_allowed=False,
+            verified="VERIFIED"
+        )
+        db.add(veh_bike_re)
+
+        veh_bike_activa = Vehicle(
+            id="veh-activa-05",
+            owner_id=driver_arjun.id,
+            vehicle_type="BIKE",
+            make="Honda",
+            model="Activa 6G Premium",
+            year=2024,
+            color="Matte Axis Grey",
+            registration_no="MH12AC6000",
+            seats_total=1,
+            image_url="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=800&q=80",
+            ac=False,
+            helmet_provided=True,
+            luggage_capacity="SMALL",
+            smoking_allowed=False,
+            pets_allowed=False,
+            verified="VERIFIED"
+        )
+        db.add(veh_bike_activa)
 
         db.commit()
 
@@ -365,6 +407,7 @@ def seed_database():
             id="ride-sf-sjc-04",
             driver_id=driver_sarah.id,
             vehicle_id=veh_tesla.id,
+            ride_type="CARPOOL",
             origin_text="San Francisco (Financial District)",
             destination_text="San Jose (Downtown)",
             origin_lat=37.7946,
@@ -380,15 +423,75 @@ def seed_database():
             booking_mode="INSTANT",
             luggage_size="MEDIUM",
             ac=True,
+            helmet_provided=False,
             notes="Carpool lane express down US-101. Music or quiet work as you prefer."
         )
         db.add(ride_sf_sjc)
 
-        # Ride 5: Completed historical ride
+        # Ride 5: Bike Pool - Bangalore (Koramangala) -> Electronic City
+        ride_bike_blr = Ride(
+            id="ride-bike-blr-05",
+            driver_id=driver_priya.id,
+            vehicle_id=veh_bike_re.id,
+            ride_type="BIKEPOOL",
+            origin_text="Bangalore (Koramangala)",
+            destination_text="Bangalore (Electronic City)",
+            origin_lat=12.9352,
+            origin_lng=77.6245,
+            destination_lat=12.8452,
+            destination_lng=77.6602,
+            departure_at=now + timedelta(days=1, hours=1),
+            estimated_arrival=now + timedelta(days=1, hours=1, minutes=35),
+            seats_total=1,
+            seats_available=1,
+            price_per_seat=110.0,
+            status="PUBLISHED",
+            booking_mode="INSTANT",
+            luggage_size="SMALL",
+            ac=False,
+            helmet_provided=True,
+            smoking_allowed=False,
+            pets_allowed=False,
+            women_only=False,
+            notes="Quick bike commute via Silk Board flyover. Clean spare ISI-certified helmet provided."
+        )
+        db.add(ride_bike_blr)
+
+        # Ride 6: Bike Pool - Pune (Shivajinagar) -> Hinjawadi Phase 1
+        ride_bike_pune = Ride(
+            id="ride-bike-pune-06",
+            driver_id=driver_arjun.id,
+            vehicle_id=veh_bike_activa.id,
+            ride_type="BIKEPOOL",
+            origin_text="Pune (Shivajinagar)",
+            destination_text="Pune (Hinjawadi Phase 1)",
+            origin_lat=18.5308,
+            origin_lng=73.8475,
+            destination_lat=18.5913,
+            destination_lng=73.7389,
+            departure_at=now + timedelta(days=1, hours=2),
+            estimated_arrival=now + timedelta(days=1, hours=2, minutes=40),
+            seats_total=1,
+            seats_available=1,
+            price_per_seat=85.0,
+            status="PUBLISHED",
+            booking_mode="INSTANT",
+            luggage_size="SMALL",
+            ac=False,
+            helmet_provided=True,
+            smoking_allowed=False,
+            pets_allowed=False,
+            women_only=False,
+            notes="Daily IT park bike commute. Skip highway traffic easily. Spare helmet ready."
+        )
+        db.add(ride_bike_pune)
+
+        # Ride 7: Completed historical ride
         ride_completed = Ride(
-            id="ride-completed-05",
+            id="ride-completed-07",
             driver_id=driver_priya.id,
             vehicle_id=veh_nexon.id,
+            ride_type="CARPOOL",
             origin_text="Bangalore (Indiranagar)",
             destination_text="Mysore (Palace Gate)",
             origin_lat=12.9784,
@@ -403,6 +506,7 @@ def seed_database():
             status="COMPLETED",
             booking_mode="INSTANT",
             ac=True,
+            helmet_provided=False,
             driver_arrived_at=now - timedelta(days=3, minutes=15),
             started_at=now - timedelta(days=3),
             completed_at=now - timedelta(days=3, hours=-3, minutes=-10)
