@@ -5,6 +5,7 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main, develop ]
+  workflow_dispatch:
 
 jobs:
   backend-test:
@@ -51,3 +52,44 @@ jobs:
       - name: Build production bundle
         working-directory: ./frontend
         run: npm run build
+
+  deploy-ec2:
+    name: Deploy to AWS EC2
+    needs: [ backend-test, frontend-build ]
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check EC2 Secrets Availability
+        id: check_secrets
+        run: |
+          if [ -n "${{ secrets.EC2_HOST }}" ] && [ -n "${{ secrets.EC2_SSH_KEY }}" ]; then
+            echo "configured=true" >> $GITHUB_OUTPUT
+          else
+            echo "configured=false" >> $GITHUB_OUTPUT
+            echo "::warning::EC2 secrets (EC2_HOST, EC2_SSH_KEY) are not yet configured in GitHub. To enable continuous deployment, add EC2_HOST, EC2_USER, and EC2_SSH_KEY under Settings > Secrets and variables > Actions."
+          fi
+
+      - name: Deploy to AWS EC2 via SSH
+        if: steps.check_secrets.outputs.configured == 'true'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER || 'ubuntu' }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.EC2_PORT || 22 }}
+          script_stop: true
+          script: |
+            set -e
+            echo "🚀 Starting automated deployment on EC2..."
+            APP_DIR="/home/${{ secrets.EC2_USER || 'ubuntu' }}/CORIDE"
+            if [ ! -d "$APP_DIR" ]; then
+              echo "Cloning repository..."
+              git clone https://github.com/Jaidhruv01/CORIDE.git "$APP_DIR"
+            fi
+            cd "$APP_DIR"
+            git fetch origin main
+            git reset --hard origin/main
+            chmod +x infra/scripts/*.sh
+            ./infra/scripts/deploy.sh

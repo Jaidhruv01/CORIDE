@@ -103,9 +103,16 @@ docker compose up --build -d
 
 ---
 
-## Testing
+---
 
-Run the automated backend Pytest suite:
+## Testing & CI/CD Pipeline
+
+The project includes an automated **GitHub Actions CI/CD Pipeline** ([.github/workflows/ci.yml](.github/workflows/ci.yml)) that runs on every push and pull request:
+1. **Backend Test Suite**: Python 3.11 environment running 13 unit and concurrency tests via Pytest.
+2. **Frontend TypeCheck & Build**: Node.js 20 environment verifying TypeScript types and compiling Vite production assets.
+3. **Automated AWS EC2 Deployment**: Automatically SSHs into your AWS EC2 instance on push to `main`, pulls changes, rebuilds Docker containers, and validates health checks.
+
+Run the test suite locally:
 ```bash
 PYTHONPATH=backend pytest backend/tests -v
 ```
@@ -114,6 +121,24 @@ Test frontend production compilation:
 ```bash
 cd frontend && npm run build
 ```
+
+---
+
+## AWS EC2 Deployment
+
+### 1-Command Automated Bootstrap on EC2:
+Connect to your Ubuntu EC2 instance and run:
+```bash
+curl -fsSL https://raw.githubusercontent.com/Jaidhruv01/CORIDE/main/infra/scripts/ec2-setup.sh | bash
+```
+
+### Configure Continuous Deployment in GitHub:
+Add the following secrets under **Settings ➔ Secrets and variables ➔ Actions**:
+- `EC2_HOST`: EC2 Public IP / DNS
+- `EC2_USER`: `ubuntu`
+- `EC2_SSH_KEY`: Your `.pem` private SSH key
+
+See the complete guide in [docs/deployment.md](docs/deployment.md).
 
 ---
 
