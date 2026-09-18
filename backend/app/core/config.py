@@ -17,6 +17,10 @@ class Settings(BaseSettings):
     REDIS_URL: str = "redis://localhost:6379/0"
     
     BACKEND_CORS_ORIGINS: List[str] = [
+        "https://coride.co.in",
+        "https://www.coride.co.in",
+        "http://coride.co.in",
+        "http://www.coride.co.in",
         "http://localhost:5180",
         "http://localhost:5173",
         "http://localhost:3000",
