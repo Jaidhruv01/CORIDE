@@ -1,95 +1,150 @@
-name: CoRide CI/CD Pipeline
+name: CoRide CI/CD
 
 on:
   push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
+    branches:
+      - main
   workflow_dispatch:
 
-jobs:
-  backend-test:
-    name: Backend Pytest & Type Validation
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+permissions:
+  contents: read
 
-      - name: Set up Python 3.11
+concurrency:
+  group: coride-production
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test and Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-          cache: 'pip'
+          python-version: "3.11"
+          cache: pip
 
-      - name: Install dependencies
+      - name: Install backend dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r backend/requirements.txt
 
-      - name: Run Pytest Test Suite
+      - name: Run backend tests
         env:
           DATABASE_URL: sqlite:///./test_ci.db
-          SECRET_KEY: ci-test-secret-key
+          SECRET_KEY: github-actions-test-secret-key-2026
         run: |
-          PYTHONPATH=backend pytest backend/tests -v
+          PYTHONPATH=backend pytest backend/tests -q
 
-  frontend-build:
-    name: Frontend Lint & TypeScript Build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Node.js 20
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
+          node-version: "20"
+          cache: npm
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Install dependencies
-        working-directory: ./frontend
+      - name: Install frontend dependencies
+        working-directory: frontend
         run: npm ci
 
-      - name: Build production bundle
-        working-directory: ./frontend
+      - name: Build frontend
+        working-directory: frontend
         run: npm run build
 
-  deploy-ec2:
-    name: Deploy to AWS EC2
-    needs: [ backend-test, frontend-build ]
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+  deploy:
+    name: Deploy to EC2
+    needs: test
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Check EC2 Secrets Availability
-        id: check_secrets
+      - name: Prepare production configuration
         run: |
-          if [ -n "${{ secrets.EC2_HOST }}" ] && [ -n "${{ secrets.EC2_SSH_KEY }}" ]; then
-            echo "configured=true" >> $GITHUB_OUTPUT
-          else
-            echo "configured=false" >> $GITHUB_OUTPUT
-            echo "::warning::EC2 secrets (EC2_HOST, EC2_SSH_KEY) are not yet configured in GitHub. To enable continuous deployment, add EC2_HOST, EC2_USER, and EC2_SSH_KEY under Settings > Secrets and variables > Actions."
-          fi
+          sed -i 's/"3000:80"/"80:80"/' docker-compose.yml
 
-      - name: Deploy to AWS EC2 via SSH
-        if: steps.check_secrets.outputs.configured == 'true'
-        uses: appleboy/ssh-action@v1.0.3
+          printf 'VITE_API_BASE_URL=/api/v1\n' > frontend/.env.production
+
+          cat > frontend/nginx.conf <<'NGINX'
+          server {
+              listen 80;
+              server_name _;
+
+              root /usr/share/nginx/html;
+              index index.html;
+
+              location /api/ {
+                  proxy_pass http://backend:8000;
+                  proxy_http_version 1.1;
+                  proxy_set_header Host $host;
+                  proxy_set_header X-Real-IP $remote_addr;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto $scheme;
+              }
+
+              location / {
+                  try_files $uri $uri/ /index.html;
+              }
+
+              gzip on;
+              gzip_types text/plain text/css application/json application/javascript;
+          }
+          NGINX
+
+      - name: Upload CoRide files to EC2
+        uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER || 'ubuntu' }}
+          username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          port: ${{ secrets.EC2_PORT || 22 }}
-          script_stop: true
+          port: 22
+          source: "backend,frontend,infra,docker-compose.yml,.env.example"
+          target: "/home/ubuntu/CORIDE"
+          overwrite: true
+
+      - name: Build and deploy CoRide
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
           script: |
-            set -e
-            echo "🚀 Starting automated deployment on EC2..."
-            APP_DIR="/home/${{ secrets.EC2_USER || 'ubuntu' }}/CORIDE"
-            if [ ! -d "$APP_DIR" ]; then
-              echo "Cloning repository..."
-              git clone https://github.com/Jaidhruv01/CORIDE.git "$APP_DIR"
+            set -eu
+
+            if ! command -v docker >/dev/null 2>&1; then
+              sudo apt-get update
+              sudo apt-get install -y docker.io docker-compose-v2
+              sudo systemctl enable --now docker
             fi
-            cd "$APP_DIR"
-            git fetch origin main
-            git reset --hard origin/main
-            chmod +x infra/scripts/*.sh
-            ./infra/scripts/deploy.sh
+
+            sudo docker rm -f coride-test 2>/dev/null || true
+
+            cd /home/ubuntu/CORIDE
+
+            sudo docker compose down --remove-orphans
+            sudo docker compose up -d --build
+
+            echo "Waiting for backend..."
+            for attempt in $(seq 1 30); do
+              if curl -fsS http://localhost:8000/health >/dev/null; then
+                echo "Backend is healthy"
+                break
+              fi
+
+              if [ "$attempt" -eq 30 ]; then
+                sudo docker compose logs --tail=100
+                exit 1
+              fi
+
+              sleep 5
+            done
+
+            curl -fsS http://localhost >/dev/null
+            sudo docker compose ps
+            sudo docker image prune -f
