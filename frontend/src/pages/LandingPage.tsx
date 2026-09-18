@@ -15,7 +15,11 @@ import {
   Star,
   CheckCircle2,
   Lock,
-  ChevronRight
+  ChevronRight,
+  Mail,
+  Quote,
+  ExternalLink,
+  Globe
 } from 'lucide-react';
 import { RideCard } from '../components/rides/RideCard';
 import { Ride } from '../types';
@@ -506,6 +510,131 @@ export const LandingPage: React.FC = () => {
             </Link>
           </div>
 
+        </div>
+      </section>
+
+      {/* Meet Our CEO Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative rounded-3xl p-8 sm:p-12 overflow-hidden glass-panel border border-lavender-500/25 shadow-2xl">
+          {/* Ambient Glows */}
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-lavender-500/15 blur-[120px] rounded-full pointer-events-none" />
+          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none" />
+
+          <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            
+            {/* CEO Portrait Card (col 5) */}
+            <div className="lg:col-span-5 flex flex-col items-center text-center">
+              <div className="relative group">
+                <div className="absolute -inset-1.5 bg-gradient-to-tr from-lavender-500 via-purple-500 to-emerald-400 rounded-3xl blur opacity-40 group-hover:opacity-75 transition duration-500" />
+                <div className="relative w-64 sm:w-72 aspect-[3/4] rounded-3xl overflow-hidden border border-lavender-400/30 bg-[#16131D] shadow-2xl">
+                  <img
+                    src="/jaidhruv-gupta-ceo.jpg"
+                    alt="Jaidhruv Gupta - CEO & Founder of CoRide"
+                    className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#16131D] via-transparent to-transparent opacity-60" />
+                  
+                  {/* Verified Founder Badge */}
+                  <div className="absolute bottom-3 left-3 right-3 p-2.5 rounded-2xl bg-[#16131D]/90 backdrop-blur-md border border-lavender-500/30 text-left">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="font-bold text-white text-sm">Jaidhruv Gupta</h4>
+                        <p className="text-[11px] text-lavender-300 font-medium">Founder & CEO, CoRide</p>
+                      </div>
+                      <span className="bg-emerald-500/15 text-emerald-300 p-1.5 rounded-xl border border-emerald-500/30">
+                        <ShieldCheck className="w-4 h-4" />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Social / Connect Links */}
+              <div className="flex items-center gap-3 mt-4">
+                <a
+                  href="https://github.com/Jaidhruv01"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-2.5 rounded-xl bg-white/5 hover:bg-lavender-500/20 text-gray-400 hover:text-lavender-300 border border-white/5 hover:border-lavender-400/40 transition-all text-xs flex items-center gap-1.5 font-medium"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                  </svg>
+                  <span>GitHub</span>
+                </a>
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-2.5 rounded-xl bg-white/5 hover:bg-lavender-500/20 text-gray-400 hover:text-lavender-300 border border-white/5 hover:border-lavender-400/40 transition-all text-xs flex items-center gap-1.5 font-medium"
+                >
+                  <svg className="w-4 h-4 fill-[#0A66C2]" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                  </svg>
+                  <span>LinkedIn</span>
+                </a>
+                <a
+                  href="mailto:contact@coride.io"
+                  className="p-2.5 rounded-xl bg-white/5 hover:bg-lavender-500/20 text-gray-400 hover:text-lavender-300 border border-white/5 hover:border-lavender-400/40 transition-all text-xs flex items-center gap-1.5 font-medium"
+                >
+                  <Mail className="w-4 h-4 text-emerald-400" />
+                  <span>Contact</span>
+                </a>
+              </div>
+            </div>
+
+            {/* CEO Vision & Details (col 7) */}
+            <div className="lg:col-span-7 space-y-5 text-left">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-lavender-500/15 border border-lavender-500/30 text-lavender-300 text-xs font-semibold">
+                <Sparkles className="w-3.5 h-3.5 text-lavender-400" />
+                <span>Meet Our CEO</span>
+              </div>
+
+              <div>
+                <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-white tracking-tight">
+                  Driving the Future of <br />
+                  <span className="gradient-text-lavender">Shared & Sustainable Mobility</span>
+                </h2>
+                <p className="text-sm font-semibold text-emerald-400 mt-1">
+                  Jaidhruv Gupta • Founder & Chief Executive Officer
+                </p>
+              </div>
+
+              <div className="relative p-4 rounded-2xl bg-white/5 border border-white/5 text-gray-300 text-xs sm:text-sm leading-relaxed italic">
+                <Quote className="w-5 h-5 text-lavender-400/40 mb-1" />
+                "We built CoRide with a single mission: to make everyday commuting and intercity travel affordable, safe, and truly sustainable. By connecting drivers with co-travelers and enabling seamless carpool and bike pool journeys, we are eliminating traffic bottlenecks and reducing road emissions together."
+              </div>
+
+              {/* Pillars */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                <div className="p-3.5 rounded-2xl bg-[#16131D] border border-lavender-500/20 space-y-1">
+                  <div className="w-7 h-7 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-bold text-xs">
+                    🌱
+                  </div>
+                  <h4 className="font-bold text-white text-xs">Zero Waste Rides</h4>
+                  <p className="text-[11px] text-gray-400">Slashing emissions by maximizing corridor seat occupancy.</p>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-[#16131D] border border-lavender-500/20 space-y-1">
+                  <div className="w-7 h-7 rounded-lg bg-lavender-500/15 text-lavender-400 flex items-center justify-center font-bold text-xs">
+                    ⚡
+                  </div>
+                  <h4 className="font-bold text-white text-xs">Car + Bike Pool</h4>
+                  <p className="text-[11px] text-gray-400">Flexible options tailored for highway and city traffic.</p>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-[#16131D] border border-lavender-500/20 space-y-1">
+                  <div className="w-7 h-7 rounded-lg bg-purple-500/15 text-purple-400 flex items-center justify-center font-bold text-xs">
+                    🛡️
+                  </div>
+                  <h4 className="font-bold text-white text-xs">Trust & Safety First</h4>
+                  <p className="text-[11px] text-gray-400">100% ID verification, route tracking & emergency response.</p>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
         </div>
       </section>
 
