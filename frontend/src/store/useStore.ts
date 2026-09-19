@@ -2,44 +2,16 @@ import { create } from 'zustand';
 import { User, Notification } from '../types';
 import { api } from '../lib/api';
 
-export type ThemeMode = 'dark' | 'light';
-
-const getInitialTheme = (): ThemeMode => {
-  if (typeof window !== 'undefined') {
-    const saved = localStorage.getItem('coride_theme');
-    if (saved === 'light' || saved === 'dark') return saved;
-  }
-  return 'dark';
-};
-
-const applyThemeToDOM = (theme: ThemeMode) => {
-  if (typeof document !== 'undefined') {
-    const root = document.documentElement;
-    if (theme === 'light') {
-      root.classList.remove('dark');
-      root.classList.add('light');
-      root.setAttribute('data-theme', 'light');
-    } else {
-      root.classList.remove('light');
-      root.classList.add('dark');
-      root.setAttribute('data-theme', 'dark');
-    }
-  }
-};
-
 interface AuthState {
   user: User | null;
   token: string | null;
   activeMode: 'rider' | 'driver' | 'admin';
-  theme: ThemeMode;
   notifications: Notification[];
   unreadCount: number;
   isLoading: boolean;
   setAuth: (user: User, token: string, refreshToken?: string) => void;
   setUser: (user: User) => void;
   setActiveMode: (mode: 'rider' | 'driver' | 'admin') => void;
-  setTheme: (theme: ThemeMode) => void;
-  toggleTheme: () => void;
   logout: () => void;
   fetchCurrentUser: () => Promise<void>;
   fetchNotifications: () => Promise<void>;
@@ -47,30 +19,13 @@ interface AuthState {
   markAllNotificationsRead: () => Promise<void>;
 }
 
-const initialTheme = getInitialTheme();
-applyThemeToDOM(initialTheme);
-
 export const useStore = create<AuthState>((set, get) => ({
   user: null,
   token: localStorage.getItem('coride_token'),
   activeMode: (localStorage.getItem('coride_mode') as any) || 'rider',
-  theme: initialTheme,
   notifications: [],
   unreadCount: 0,
   isLoading: true,
-
-  setTheme: (theme: ThemeMode) => {
-    localStorage.setItem('coride_theme', theme);
-    applyThemeToDOM(theme);
-    set({ theme });
-  },
-
-  toggleTheme: () => {
-    const nextTheme: ThemeMode = get().theme === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('coride_theme', nextTheme);
-    applyThemeToDOM(nextTheme);
-    set({ theme: nextTheme });
-  },
 
   setAuth: (user, token, refreshToken) => {
     localStorage.setItem('coride_token', token);

@@ -31,10 +31,10 @@ export const ForgotPasswordPage: React.FC = () => {
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-lavender-700 to-lavender-500 flex items-center justify-center mx-auto shadow-glow-sm">
             <KeyRound className="w-6 h-6 text-white" />
           </div>
-          <h2 className="font-display font-extrabold text-3xl text-slate-900 dark:text-white">
+          <h2 className="font-display font-extrabold text-3xl text-white">
             Reset Password
           </h2>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-gray-400">
+          <p className="text-xs sm:text-sm text-gray-400">
             Enter your registered email and we'll send reset instructions
           </p>
         </div>
@@ -42,11 +42,11 @@ export const ForgotPasswordPage: React.FC = () => {
         <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-lavender-500/20 shadow-2xl space-y-5">
           {sent ? (
             <div className="text-center space-y-4 py-4">
-              <div className="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center mx-auto text-emerald-600 dark:text-emerald-400">
+              <div className="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center mx-auto text-emerald-400">
                 <CheckCircle2 className="w-6 h-6" />
               </div>
-              <h3 className="font-bold text-slate-900 dark:text-white text-base">Check your email</h3>
-              <p className="text-xs text-slate-600 dark:text-gray-400">
+              <h3 className="font-bold text-white text-base">Check your email</h3>
+              <p className="text-xs text-gray-400">
                 We've sent a password reset confirmation link to <strong>{email}</strong>.
               </p>
               <Link to="/login" className="btn-primary inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs font-semibold mt-2">
@@ -56,25 +56,25 @@ export const ForgotPasswordPage: React.FC = () => {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4 text-left">
               {error && (
-                <div className="p-3.5 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-600 dark:text-rose-300 text-xs flex items-center gap-2">
+                <div className="p-3.5 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 shrink-0" />
                   <span>{error}</span>
                 </div>
               )}
 
               <div>
-                <label className="text-xs text-slate-700 dark:text-gray-300 font-semibold block mb-1.5">
+                <label className="text-xs text-gray-300 font-semibold block mb-1.5">
                   Registered Email Address
                 </label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 text-slate-400 dark:text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <Mail className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
                     type="email"
                     required
                     placeholder="name@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full rounded-xl bg-white dark:bg-[#16131D] border border-lavender-500/25 pl-10 pr-4 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:border-lavender-400 transition-colors"
+                    className="w-full rounded-xl bg-[#16131D] border border-lavender-500/20 pl-10 pr-4 py-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-lavender-400 transition-colors"
                   />
                 </div>
               </div>
@@ -96,9 +96,9 @@ export const ForgotPasswordPage: React.FC = () => {
             </form>
           )}
 
-          <div className="mt-6 pt-5 border-t border-slate-200 dark:border-white/5 text-center text-xs text-slate-600 dark:text-gray-400">
+          <div className="mt-6 pt-5 border-t border-white/5 text-center text-xs text-gray-400">
             Remembered your password?{' '}
-            <Link to="/login" className="text-lavender-600 dark:text-lavender-400 hover:text-lavender-700 dark:hover:text-lavender-300 font-bold">
+            <Link to="/login" className="text-lavender-400 hover:text-lavender-300 font-bold">
               Sign In
             </Link>
           </div>

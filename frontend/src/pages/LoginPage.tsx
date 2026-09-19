@@ -13,7 +13,6 @@ import {
   Eye,
   EyeOff,
   Phone,
-  CheckCircle2,
   KeyRound
 } from 'lucide-react';
 import { api } from '../lib/api';
@@ -67,7 +66,6 @@ export const LoginPage: React.FC = () => {
 
         setAuth(res.user, res.access_token, res.refresh_token);
         
-        // Route according to user role if no specific redirect was requested
         if (redirectPath === '/dashboard') {
           if (res.user.is_admin) {
             navigate('/admin', { replace: true });
@@ -93,7 +91,6 @@ export const LoginPage: React.FC = () => {
           throw new Error('Invalid OTP. For demo mode, enter 1234');
         }
 
-        // Demo login as corresponding role for phone authentication
         const targetEmail = selectedRole === 'driver' 
           ? 'priya.sharma@example.com' 
           : selectedRole === 'admin' 
@@ -175,21 +172,21 @@ export const LoginPage: React.FC = () => {
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-lavender-700 to-lavender-500 flex items-center justify-center mx-auto shadow-glow-sm">
             <LogIn className="w-6 h-6 text-white" />
           </div>
-          <h2 className="font-display font-extrabold text-3xl text-slate-900 dark:text-white">
+          <h2 className="font-display font-extrabold text-3xl text-white">
             Welcome to CoRide
           </h2>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-gray-400">
+          <p className="text-xs sm:text-sm text-gray-400">
             Sign in to manage your rides, bookings, vehicles & messages
           </p>
         </div>
 
         {/* 1-Click Instant Demo Access Selector */}
-        <div className="glass-panel p-4 sm:p-5 rounded-3xl border border-lavender-500/25 space-y-3">
-          <div className="flex items-center justify-between text-xs text-lavender-600 dark:text-lavender-300 font-semibold">
+        <div className="glass-panel p-4 sm:p-5 rounded-3xl border border-lavender-500/30 space-y-3">
+          <div className="flex items-center justify-between text-xs text-lavender-300 font-semibold">
             <span className="flex items-center gap-1.5 font-bold">
-              <Sparkles className="w-4 h-4 text-lavender-500" /> Instant Verified Demo Logins
+              <Sparkles className="w-4 h-4 text-lavender-400" /> Instant Verified Demo Logins
             </span>
-            <span className="text-[10px] text-slate-500 dark:text-gray-400 bg-lavender-500/10 dark:bg-white/5 px-2 py-0.5 rounded-md border border-lavender-500/20">
+            <span className="text-[10px] text-gray-400 bg-white/5 px-2 py-0.5 rounded-md border border-lavender-500/20">
               1-Click Access
             </span>
           </div>
@@ -200,22 +197,22 @@ export const LoginPage: React.FC = () => {
               onClick={() => handleQuickDemoLogin('rider', 'rahul.verma@example.com', 'password123')}
               className={`p-3 rounded-2xl border cursor-pointer transition-all text-left group relative ${
                 selectedRole === 'rider'
-                  ? 'bg-lavender-500/15 border-lavender-400 shadow-sm'
-                  : 'bg-white dark:bg-white/5 border-lavender-500/20 hover:border-lavender-400 hover:bg-lavender-500/10'
+                  ? 'bg-lavender-500/20 border-lavender-400 shadow-glow-sm'
+                  : 'bg-white/5 border-lavender-500/20 hover:border-lavender-400 hover:bg-lavender-500/10'
               }`}
             >
               <div className="flex items-center justify-between mb-1">
-                <span className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                <span className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
                   <User className="w-4 h-4" />
                 </span>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">
+                <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-300 bg-emerald-500/15 px-1.5 py-0.5 rounded border border-emerald-500/30">
                   Rider
                 </span>
               </div>
-              <p className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-lavender-600 dark:group-hover:text-lavender-300">
+              <p className="font-bold text-xs text-white group-hover:text-lavender-300">
                 Rahul Verma
               </p>
-              <p className="text-[10px] text-slate-500 dark:text-gray-400 mt-0.5 truncate">
+              <p className="text-[10px] text-gray-400 mt-0.5 truncate">
                 Find & Book Rides
               </p>
             </div>
@@ -225,22 +222,22 @@ export const LoginPage: React.FC = () => {
               onClick={() => handleQuickDemoLogin('driver', 'priya.sharma@example.com', 'password123')}
               className={`p-3 rounded-2xl border cursor-pointer transition-all text-left group relative ${
                 selectedRole === 'driver'
-                  ? 'bg-lavender-500/15 border-lavender-400 shadow-sm'
-                  : 'bg-white dark:bg-white/5 border-lavender-500/20 hover:border-lavender-400 hover:bg-lavender-500/10'
+                  ? 'bg-lavender-500/20 border-lavender-400 shadow-glow-sm'
+                  : 'bg-white/5 border-lavender-500/20 hover:border-lavender-400 hover:bg-lavender-500/10'
               }`}
             >
               <div className="flex items-center justify-between mb-1">
-                <span className="w-7 h-7 rounded-lg bg-lavender-500/20 text-lavender-600 dark:text-lavender-400 flex items-center justify-center">
+                <span className="w-7 h-7 rounded-lg bg-lavender-500/20 text-lavender-400 flex items-center justify-center">
                   <Car className="w-4 h-4" />
                 </span>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-lavender-600 dark:text-lavender-400 bg-lavender-500/10 px-1.5 py-0.5 rounded">
+                <span className="text-[9px] font-bold uppercase tracking-wider text-lavender-300 bg-lavender-500/15 px-1.5 py-0.5 rounded border border-lavender-500/30">
                   Driver
                 </span>
               </div>
-              <p className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-lavender-600 dark:group-hover:text-lavender-300">
+              <p className="font-bold text-xs text-white group-hover:text-lavender-300">
                 Priya Sharma
               </p>
-              <p className="text-[10px] text-slate-500 dark:text-gray-400 mt-0.5 truncate">
+              <p className="text-[10px] text-gray-400 mt-0.5 truncate">
                 Publish & Earn
               </p>
             </div>
@@ -250,22 +247,22 @@ export const LoginPage: React.FC = () => {
               onClick={() => handleQuickDemoLogin('admin', 'admin@coride.com', 'admin123')}
               className={`p-3 rounded-2xl border cursor-pointer transition-all text-left group relative ${
                 selectedRole === 'admin'
-                  ? 'bg-purple-500/20 border-purple-400 shadow-sm'
-                  : 'bg-white dark:bg-white/5 border-lavender-500/20 hover:border-purple-400 hover:bg-purple-500/10'
+                  ? 'bg-purple-500/25 border-purple-400 shadow-glow-sm'
+                  : 'bg-white/5 border-lavender-500/20 hover:border-purple-400 hover:bg-purple-500/10'
               }`}
             >
               <div className="flex items-center justify-between mb-1">
-                <span className="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+                <span className="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center">
                   <Shield className="w-4 h-4" />
                 </span>
-                <span className="text-[9px] font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 bg-purple-500/10 px-1.5 py-0.5 rounded">
+                <span className="text-[9px] font-bold uppercase tracking-wider text-purple-300 bg-purple-500/15 px-1.5 py-0.5 rounded border border-purple-500/30">
                   Admin
                 </span>
               </div>
-              <p className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-300">
+              <p className="font-bold text-xs text-white group-hover:text-purple-300">
                 Platform Admin
               </p>
-              <p className="text-[10px] text-slate-500 dark:text-gray-400 mt-0.5 truncate">
+              <p className="text-[10px] text-gray-400 mt-0.5 truncate">
                 Master Security
               </p>
             </div>
@@ -276,14 +273,14 @@ export const LoginPage: React.FC = () => {
         <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-lavender-500/20 shadow-2xl space-y-5">
           
           {/* Sign In Mode Tabs: Email / Phone */}
-          <div className="flex items-center justify-center p-1 rounded-2xl bg-lavender-500/10 dark:bg-[#16131D] border border-lavender-500/20 text-xs font-semibold">
+          <div className="flex items-center justify-center p-1 rounded-2xl bg-[#16131D] border border-lavender-500/20 text-xs font-semibold">
             <button
               type="button"
               onClick={() => { setLoginMethod('email'); setError(''); }}
               className={`flex-1 py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
                 loginMethod === 'email'
                   ? 'bg-lavender-600 text-white shadow-sm'
-                  : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'
+                  : 'text-gray-400 hover:text-white'
               }`}
             >
               <Mail className="w-3.5 h-3.5" /> Email & Password
@@ -294,7 +291,7 @@ export const LoginPage: React.FC = () => {
               className={`flex-1 py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
                 loginMethod === 'phone'
                   ? 'bg-lavender-600 text-white shadow-sm'
-                  : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'
+                  : 'text-gray-400 hover:text-white'
               }`}
             >
               <Phone className="w-3.5 h-3.5" /> Mobile OTP
@@ -302,7 +299,7 @@ export const LoginPage: React.FC = () => {
           </div>
 
           {error && (
-            <div className="p-3.5 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-600 dark:text-rose-300 text-xs flex items-center gap-2.5">
+            <div className="p-3.5 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2.5">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{error}</span>
             </div>
@@ -314,48 +311,48 @@ export const LoginPage: React.FC = () => {
             {loginMethod === 'email' ? (
               <>
                 <div>
-                  <label className="text-xs text-slate-700 dark:text-gray-300 font-semibold block mb-1.5">
+                  <label className="text-xs text-gray-300 font-semibold block mb-1.5">
                     Email Address
                   </label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 text-slate-400 dark:text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <Mail className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="email"
                       required
                       placeholder="name@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full rounded-xl bg-white dark:bg-[#16131D] border border-lavender-500/25 pl-10 pr-4 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:border-lavender-400 transition-colors"
+                      className="w-full rounded-xl bg-[#16131D] border border-lavender-500/20 pl-10 pr-4 py-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-lavender-400 transition-colors"
                     />
                   </div>
                 </div>
 
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs text-slate-700 dark:text-gray-300 font-semibold">
+                    <label className="text-xs text-gray-300 font-semibold">
                       Password
                     </label>
                     <Link
                       to="/forgot-password"
-                      className="text-[11px] text-lavender-600 dark:text-lavender-400 hover:text-lavender-700 dark:hover:text-lavender-300 font-medium"
+                      className="text-[11px] text-lavender-400 hover:text-lavender-300 font-medium"
                     >
                       Forgot password?
                     </Link>
                   </div>
                   <div className="relative">
-                    <Lock className="w-4 h-4 text-slate-400 dark:text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <Lock className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       required
                       placeholder="••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full rounded-xl bg-white dark:bg-[#16131D] border border-lavender-500/25 pl-10 pr-10 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:border-lavender-400 transition-colors"
+                      className="w-full rounded-xl bg-[#16131D] border border-lavender-500/20 pl-10 pr-10 py-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-lavender-400 transition-colors"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-400 hover:text-slate-700 dark:hover:text-white transition-colors"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
                       title={showPassword ? 'Hide password' : 'Show password'}
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -365,7 +362,7 @@ export const LoginPage: React.FC = () => {
 
                 {/* Remember Me Checkbox */}
                 <div className="flex items-center justify-between pt-1">
-                  <label className="flex items-center gap-2 text-xs text-slate-600 dark:text-gray-300 cursor-pointer select-none">
+                  <label className="flex items-center gap-2 text-xs text-gray-300 cursor-pointer select-none">
                     <input
                       type="checkbox"
                       checked={rememberMe}
@@ -378,7 +375,7 @@ export const LoginPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => autofillDemoCredentials(selectedRole)}
-                    className="text-[11px] text-lavender-600 dark:text-lavender-400 hover:underline font-medium"
+                    className="text-[11px] text-lavender-400 hover:underline font-medium"
                   >
                     Reset to Demo
                   </button>
@@ -387,11 +384,11 @@ export const LoginPage: React.FC = () => {
             ) : (
               <>
                 <div>
-                  <label className="text-xs text-slate-700 dark:text-gray-300 font-semibold block mb-1.5">
+                  <label className="text-xs text-gray-300 font-semibold block mb-1.5">
                     Mobile Number
                   </label>
                   <div className="relative">
-                    <Phone className="w-4 h-4 text-slate-400 dark:text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <Phone className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="tel"
                       required
@@ -399,7 +396,7 @@ export const LoginPage: React.FC = () => {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       disabled={otpSent}
-                      className="w-full rounded-xl bg-white dark:bg-[#16131D] border border-lavender-500/25 pl-10 pr-4 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:border-lavender-400 disabled:opacity-60 transition-colors"
+                      className="w-full rounded-xl bg-[#16131D] border border-lavender-500/20 pl-10 pr-4 py-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-lavender-400 disabled:opacity-60 transition-colors"
                     />
                   </div>
                 </div>
@@ -407,15 +404,15 @@ export const LoginPage: React.FC = () => {
                 {otpSent && (
                   <div className="space-y-2 animate-in fade-in">
                     <div className="flex items-center justify-between">
-                      <label className="text-xs text-slate-700 dark:text-gray-300 font-semibold">
+                      <label className="text-xs text-gray-300 font-semibold">
                         Enter 4-Digit OTP Code
                       </label>
-                      <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">
+                      <span className="text-[10px] text-emerald-400 font-semibold">
                         (Demo OTP: 1234)
                       </span>
                     </div>
                     <div className="relative">
-                      <KeyRound className="w-4 h-4 text-slate-400 dark:text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <KeyRound className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                       <input
                         type="text"
                         maxLength={4}
@@ -423,13 +420,13 @@ export const LoginPage: React.FC = () => {
                         placeholder="1234"
                         value={otp}
                         onChange={(e) => setOtp(e.target.value)}
-                        className="w-full rounded-xl bg-white dark:bg-[#16131D] border border-lavender-500/25 pl-10 pr-4 py-3 text-sm tracking-widest font-mono text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:border-lavender-400 text-center"
+                        className="w-full rounded-xl bg-[#16131D] border border-lavender-500/20 pl-10 pr-4 py-3 text-sm tracking-widest font-mono text-white placeholder-gray-500 focus:outline-none focus:border-lavender-400 text-center"
                       />
                     </div>
                     <button
                       type="button"
                       onClick={() => { setOtpSent(false); setOtp(''); }}
-                      className="text-[11px] text-lavender-600 dark:text-lavender-400 hover:underline"
+                      className="text-[11px] text-lavender-400 hover:underline"
                     >
                       Change phone number
                     </button>
@@ -457,11 +454,11 @@ export const LoginPage: React.FC = () => {
           </form>
 
           {/* Registration Footer */}
-          <div className="mt-6 pt-5 border-t border-slate-200 dark:border-white/5 text-center text-xs text-slate-600 dark:text-gray-400">
+          <div className="mt-6 pt-5 border-t border-white/5 text-center text-xs text-gray-400">
             Don't have an account yet?{' '}
             <Link
               to="/register"
-              className="text-lavender-600 dark:text-lavender-400 hover:text-lavender-700 dark:hover:text-lavender-300 font-bold"
+              className="text-lavender-400 hover:text-lavender-300 font-bold"
             >
               Create free account
             </Link>

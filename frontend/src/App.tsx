@@ -39,7 +39,7 @@ import { AdminPaymentsPage } from './pages/AdminPaymentsPage';
 import { AdminSecurityPage } from './pages/AdminSecurityPage';
 
 export const App: React.FC = () => {
-  const { fetchCurrentUser, theme } = useStore();
+  const { fetchCurrentUser } = useStore();
 
   useEffect(() => {
     fetchCurrentUser();
@@ -47,9 +47,7 @@ export const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-      <div className={`flex flex-col min-h-screen transition-colors duration-200 ${
-        theme === 'light' ? 'bg-[#F8F9FD] text-[#16131D]' : 'bg-[#16131D] text-white'
-      }`}>
+      <div className="flex flex-col min-h-screen bg-[#16131D] text-white">
         <Navbar />
         
         <main className="flex-grow">

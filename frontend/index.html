@@ -18,27 +18,9 @@
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-  <!-- Theme Hydration (Zero Flicker) -->
-  <script>
-    (function() {
-      try {
-        var theme = localStorage.getItem('coride_theme') || 'dark';
-        var root = document.documentElement;
-        if (theme === 'light') {
-          root.classList.remove('dark');
-          root.classList.add('light');
-          root.setAttribute('data-theme', 'light');
-        } else {
-          root.classList.remove('light');
-          root.classList.add('dark');
-          root.setAttribute('data-theme', 'dark');
-        }
-      } catch (e) {}
-    })();
-  </script>
 </head>
 
-<body class="antialiased min-h-screen transition-colors duration-200">
+<body class="bg-[#16131D] text-white selection:bg-lavender-500 selection:text-white antialiased min-h-screen">
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>

@@ -62,10 +62,10 @@ export const RegisterPage: React.FC = () => {
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-lavender-700 to-lavender-500 flex items-center justify-center mx-auto shadow-glow-sm">
             <UserPlus className="w-6 h-6 text-white" />
           </div>
-          <h2 className="font-display font-extrabold text-3xl text-slate-900 dark:text-white">
+          <h2 className="font-display font-extrabold text-3xl text-white">
             Join CoRide
           </h2>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-gray-400">
+          <p className="text-xs sm:text-sm text-gray-400">
             Join thousands of verified commuters sharing routes & saving costs
           </p>
         </div>
@@ -73,21 +73,21 @@ export const RegisterPage: React.FC = () => {
         {/* Register Form */}
         <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-lavender-500/20 shadow-2xl space-y-5">
           {error && (
-            <div className="p-3.5 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-600 dark:text-rose-300 text-xs flex items-center gap-2.5">
+            <div className="p-3.5 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2.5">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{error}</span>
             </div>
           )}
 
           {/* Account Intent Selector */}
-          <div className="grid grid-cols-2 gap-3 p-1 rounded-2xl bg-lavender-500/10 dark:bg-[#16131D] border border-lavender-500/20">
+          <div className="grid grid-cols-2 gap-3 p-1 rounded-2xl bg-[#16131D] border border-lavender-500/20">
             <button
               type="button"
               onClick={() => setIsDriver(false)}
               className={`py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
                 !isDriver
                   ? 'bg-lavender-600 text-white shadow-sm'
-                  : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'
+                  : 'text-gray-400 hover:text-white'
               }`}
             >
               <User className="w-3.5 h-3.5" /> Rider Account
@@ -98,7 +98,7 @@ export const RegisterPage: React.FC = () => {
               className={`py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
                 isDriver
                   ? 'bg-lavender-600 text-white shadow-sm'
-                  : 'text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white'
+                  : 'text-gray-400 hover:text-white'
               }`}
             >
               <Car className="w-3.5 h-3.5" /> Driver Account
@@ -107,61 +107,61 @@ export const RegisterPage: React.FC = () => {
 
           <form onSubmit={handleRegister} className="space-y-4 text-left">
             <div>
-              <label className="text-xs text-slate-700 dark:text-gray-300 font-semibold block mb-1.5">
+              <label className="text-xs text-gray-300 font-semibold block mb-1.5">
                 Full Name
               </label>
               <div className="relative">
-                <User className="w-4 h-4 text-slate-400 dark:text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <User className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   required
                   placeholder="e.g. John Doe"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-xl bg-white dark:bg-[#16131D] border border-lavender-500/25 pl-10 pr-4 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:border-lavender-400 transition-colors"
+                  className="w-full rounded-xl bg-[#16131D] border border-lavender-500/20 pl-10 pr-4 py-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-lavender-400 transition-colors"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-xs text-slate-700 dark:text-gray-300 font-semibold block mb-1.5">
+              <label className="text-xs text-gray-300 font-semibold block mb-1.5">
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 dark:text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Mail className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="email"
                   required
                   placeholder="name@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-xl bg-white dark:bg-[#16131D] border border-lavender-500/25 pl-10 pr-4 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:border-lavender-400 transition-colors"
+                  className="w-full rounded-xl bg-[#16131D] border border-lavender-500/20 pl-10 pr-4 py-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-lavender-400 transition-colors"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-xs text-slate-700 dark:text-gray-300 font-semibold block mb-1.5">
+              <label className="text-xs text-gray-300 font-semibold block mb-1.5">
                 Mobile Phone Number
               </label>
               <div className="relative">
-                <Phone className="w-4 h-4 text-slate-400 dark:text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Phone className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="tel"
                   placeholder="+91 98765 43210"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full rounded-xl bg-white dark:bg-[#16131D] border border-lavender-500/25 pl-10 pr-4 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:border-lavender-400 transition-colors"
+                  className="w-full rounded-xl bg-[#16131D] border border-lavender-500/20 pl-10 pr-4 py-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-lavender-400 transition-colors"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-xs text-slate-700 dark:text-gray-300 font-semibold block mb-1.5">
+              <label className="text-xs text-gray-300 font-semibold block mb-1.5">
                 Password
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 dark:text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Lock className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
@@ -169,12 +169,12 @@ export const RegisterPage: React.FC = () => {
                   placeholder="At least 6 characters"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full rounded-xl bg-white dark:bg-[#16131D] border border-lavender-500/25 pl-10 pr-10 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:border-lavender-400 transition-colors"
+                  className="w-full rounded-xl bg-[#16131D] border border-lavender-500/20 pl-10 pr-10 py-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-lavender-400 transition-colors"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-400 hover:text-slate-700 dark:hover:text-white transition-colors"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -186,25 +186,25 @@ export const RegisterPage: React.FC = () => {
               onClick={() => setIsDriver(!isDriver)}
               className={`p-3.5 rounded-2xl border cursor-pointer transition-all flex items-center justify-between ${
                 isDriver
-                  ? 'bg-lavender-500/15 border-lavender-500/40 text-slate-900 dark:text-white'
-                  : 'bg-slate-50 dark:bg-[#16131D] border-lavender-500/15 text-slate-600 dark:text-gray-400 hover:border-lavender-400'
+                  ? 'bg-lavender-500/15 border-lavender-500/40 text-white'
+                  : 'bg-[#16131D] border-lavender-500/15 text-gray-400 hover:border-lavender-400'
               }`}
             >
               <div className="flex items-center space-x-3">
-                <div className={`p-2 rounded-xl ${isDriver ? 'bg-lavender-600 text-white' : 'bg-lavender-500/10 text-lavender-600 dark:text-gray-400'}`}>
+                <div className={`p-2 rounded-xl ${isDriver ? 'bg-lavender-600 text-white' : 'bg-lavender-500/10 text-lavender-400'}`}>
                   <Car className="w-4 h-4" />
                 </div>
                 <div>
-                  <p className="font-bold text-xs text-slate-900 dark:text-white">
+                  <p className="font-bold text-xs text-white">
                     I plan to publish & offer rides
                   </p>
-                  <p className="text-[10px] text-slate-500 dark:text-gray-400">
+                  <p className="text-[10px] text-gray-400">
                     You can also switch seamlessly between Rider & Driver anytime
                   </p>
                 </div>
               </div>
-              <div className={`w-5 h-5 rounded-md border flex items-center justify-center ${isDriver ? 'bg-lavender-600 border-lavender-600 text-white' : 'border-slate-300 dark:border-gray-500'}`}>
-                {isDriver && <CheckCircle className="w-3.5 h-3.5" />}
+              <div className={`w-5 h-5 rounded-md border flex items-center justify-center ${isDriver ? 'bg-lavender-600 border-lavender-600 text-white' : 'border-gray-500'}`}>
+                {isDriver && <CheckCircle className="w-3.5 h-3.5 text-white" />}
               </div>
             </div>
 
@@ -224,11 +224,11 @@ export const RegisterPage: React.FC = () => {
             </button>
           </form>
 
-          <div className="mt-6 pt-5 border-t border-slate-200 dark:border-white/5 text-center text-xs text-slate-600 dark:text-gray-400">
+          <div className="mt-6 pt-5 border-t border-white/5 text-center text-xs text-gray-400">
             Already have an account?{' '}
             <Link
               to="/login"
-              className="text-lavender-600 dark:text-lavender-400 hover:text-lavender-700 dark:hover:text-lavender-300 font-bold"
+              className="text-lavender-400 hover:text-lavender-300 font-bold"
             >
               Sign In
             </Link>
