@@ -168,31 +168,32 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover {
 
 html.light body {
   background-color: #F8F9FD !important;
-  color: #16131D !important;
+  color: #14111E !important;
 }
 
 /* Light mode Glass Panels */
 html.light .glass-panel {
-  background: rgba(255, 255, 255, 0.94) !important;
-  border: 1px solid rgba(155, 126, 222, 0.22) !important;
-  box-shadow: 0 10px 30px -10px rgba(111, 85, 183, 0.1), 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(155, 126, 222, 0.2) !important;
+  box-shadow: 0 4px 20px -2px rgba(111, 85, 183, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.03) !important;
 }
 
 html.light .glass-panel-hover {
-  background: rgba(255, 255, 255, 0.94) !important;
-  border: 1px solid rgba(155, 126, 222, 0.22) !important;
-  box-shadow: 0 10px 30px -10px rgba(111, 85, 183, 0.08), 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(155, 126, 222, 0.2) !important;
+  box-shadow: 0 4px 20px -2px rgba(111, 85, 183, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.03) !important;
 }
 
 html.light .glass-panel-hover:hover {
-  border-color: rgba(155, 126, 222, 0.55) !important;
-  box-shadow: 0 16px 35px -8px rgba(111, 85, 183, 0.18) !important;
+  border-color: rgba(155, 126, 222, 0.5) !important;
+  box-shadow: 0 12px 32px -4px rgba(111, 85, 183, 0.16), 0 4px 10px -2px rgba(0, 0, 0, 0.04) !important;
+  transform: translateY(-2px);
 }
 
 html.light .glass-nav {
-  background: rgba(255, 255, 255, 0.94) !important;
-  border-bottom: 1px solid rgba(155, 126, 222, 0.18) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-bottom: 1px solid rgba(155, 126, 222, 0.2) !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04) !important;
 }
 
 /* Light Mode Background Overrides */
@@ -233,11 +234,12 @@ html.light h3,
 html.light h4,
 html.light h5,
 html.light h6 {
-  color: #16131D !important;
+  color: #14111E !important;
+  font-weight: 700;
 }
 
 html.light .text-white:not(.btn-primary):not([class*="bg-lavender-6"]):not([class*="bg-lavender-7"]):not([class*="bg-purple-6"]):not([class*="bg-purple-7"]):not([class*="bg-emerald-5"]):not([class*="bg-emerald-6"]):not([class*="bg-rose-5"]):not([class*="bg-rose-6"]):not([class*="bg-amber-5"]):not([class*="bg-amber-6"]):not([class*="bg-blue-6"]) {
-  color: #16131D !important;
+  color: #1E1B26 !important;
 }
 
 html.light .text-gray-200 {
@@ -249,11 +251,11 @@ html.light .text-gray-300 {
 }
 
 html.light .text-gray-400 {
-  color: #696279 !important;
+  color: #625B73 !important;
 }
 
 html.light .text-gray-500 {
-  color: #8A839C !important;
+  color: #827A95 !important;
 }
 
 html.light .text-lavender-200 {
@@ -264,9 +266,40 @@ html.light .text-lavender-300 {
   color: #6F55B7 !important;
 }
 
+/* High Contrast Colored Status Badges in Light Mode */
+html.light .text-emerald-300,
+html.light .text-emerald-400 {
+  color: #047857 !important;
+}
+
+html.light .text-amber-300,
+html.light .text-amber-400 {
+  color: #B45309 !important;
+}
+
+html.light .text-rose-300,
+html.light .text-rose-400 {
+  color: #BE123C !important;
+}
+
+html.light .text-cyan-300,
+html.light .text-cyan-400 {
+  color: #0E7490 !important;
+}
+
+html.light .text-purple-300,
+html.light .text-purple-400 {
+  color: #6D28D9 !important;
+}
+
+html.light .text-pink-300,
+html.light .text-pink-400 {
+  color: #BE185D !important;
+}
+
 /* Light Mode Text Gradients */
 html.light .gradient-text {
-  background: linear-gradient(135deg, #16131D 20%, #6F55B7 100%) !important;
+  background: linear-gradient(135deg, #14111E 20%, #6F55B7 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
 }
@@ -300,7 +333,7 @@ html.light input:not([type="checkbox"]):not([type="radio"]),
 html.light select,
 html.light textarea {
   background-color: #FFFFFF !important;
-  color: #16131D !important;
+  color: #14111E !important;
   border-color: rgba(155, 126, 222, 0.28) !important;
 }
 
@@ -308,16 +341,17 @@ html.light input:focus,
 html.light select:focus,
 html.light textarea:focus {
   border-color: #8363CF !important;
+  box-shadow: 0 0 0 3px rgba(155, 126, 222, 0.2) !important;
 }
 
 html.light input::placeholder,
 html.light textarea::placeholder {
-  color: #8C869C !important;
+  color: #8E889E !important;
 }
 
 html.light select option {
   background-color: #FFFFFF !important;
-  color: #16131D !important;
+  color: #14111E !important;
 }
 
 html.light input[type="date"],
@@ -341,7 +375,7 @@ html.light footer {
 }
 
 html.light footer h4 {
-  color: #16131D !important;
+  color: #14111E !important;
 }
 
 html.light footer a {
@@ -364,7 +398,7 @@ html.light .leaflet-container {
 
 html.light .leaflet-popup-content-wrapper {
   background: #FFFFFF !important;
-  color: #16131D !important;
+  color: #14111E !important;
   border: 1px solid rgba(155, 126, 222, 0.3) !important;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
 }

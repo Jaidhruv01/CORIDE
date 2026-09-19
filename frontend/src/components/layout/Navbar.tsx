@@ -53,10 +53,10 @@ export const Navbar: React.FC = () => {
             <Car className="w-5 h-5 text-white" />
           </div>
           <div className="flex flex-col">
-            <span className="font-display font-extrabold text-2xl tracking-tight text-white flex items-center gap-1">
-              Co<span className="text-lavender-400">Ride</span>
+            <span className="font-display font-extrabold text-2xl tracking-tight text-slate-900 dark:text-white flex items-center gap-1">
+              Co<span className="text-lavender-600 dark:text-lavender-400">Ride</span>
             </span>
-            <span className="text-[10px] text-lavender-200/60 font-medium tracking-wider uppercase -mt-1">
+            <span className="text-[10px] text-slate-500 dark:text-lavender-200/60 font-semibold tracking-wider uppercase -mt-1">
               Smart Carpooling
             </span>
           </div>
@@ -66,50 +66,50 @@ export const Navbar: React.FC = () => {
         <nav className="hidden md:flex items-center space-x-1 lg:space-x-2">
           <Link
             to="/search"
-            className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center gap-1.5 ${
               location.pathname.startsWith('/search')
-                ? 'text-lavender-300 bg-lavender-500/15'
-                : 'text-gray-300 hover:text-white hover:bg-white/5'
+                ? 'text-lavender-700 dark:text-lavender-300 bg-lavender-500/15 dark:bg-lavender-500/20'
+                : 'text-slate-700 dark:text-gray-300 hover:text-lavender-700 dark:hover:text-white hover:bg-lavender-500/10 dark:hover:bg-white/5'
             }`}
           >
-            <Search className="w-4 h-4 text-lavender-400" />
+            <Search className="w-4 h-4 text-lavender-600 dark:text-lavender-400" />
             Find a Ride
           </Link>
 
           <Link
             to="/rides/new"
-            className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center gap-1.5 ${
               location.pathname === '/rides/new'
-                ? 'text-lavender-300 bg-lavender-500/15'
-                : 'text-gray-300 hover:text-white hover:bg-white/5'
+                ? 'text-lavender-700 dark:text-lavender-300 bg-lavender-500/15 dark:bg-lavender-500/20'
+                : 'text-slate-700 dark:text-gray-300 hover:text-lavender-700 dark:hover:text-white hover:bg-lavender-500/10 dark:hover:bg-white/5'
             }`}
           >
-            <PlusCircle className="w-4 h-4 text-lavender-400" />
+            <PlusCircle className="w-4 h-4 text-lavender-600 dark:text-lavender-400" />
             Publish Ride
           </Link>
 
           <Link
             to="/safety"
-            className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-colors flex items-center gap-1.5 ${
               location.pathname === '/safety'
-                ? 'text-lavender-300 bg-lavender-500/15'
-                : 'text-gray-300 hover:text-white hover:bg-white/5'
+                ? 'text-lavender-700 dark:text-lavender-300 bg-lavender-500/15 dark:bg-lavender-500/20'
+                : 'text-slate-700 dark:text-gray-300 hover:text-lavender-700 dark:hover:text-white hover:bg-lavender-500/10 dark:hover:bg-white/5'
             }`}
           >
-            <Shield className="w-4 h-4 text-lavender-400" />
+            <Shield className="w-4 h-4 text-lavender-600 dark:text-lavender-400" />
             Safety & Trust
           </Link>
 
           {user?.is_admin && (
             <Link
               to="/admin"
-              className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-1.5 ${
+              className={`px-3.5 py-2 rounded-xl text-sm font-bold transition-colors flex items-center gap-1.5 ${
                 location.pathname.startsWith('/admin')
-                  ? 'text-purple-300 bg-purple-500/20'
-                  : 'text-purple-400 hover:text-purple-300 hover:bg-purple-500/10'
+                  ? 'text-purple-700 dark:text-purple-300 bg-purple-500/20'
+                  : 'text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 hover:bg-purple-500/10'
               }`}
             >
-              <Sparkles className="w-4 h-4 text-purple-400" />
+              <Sparkles className="w-4 h-4 text-purple-600 dark:text-purple-400" />
               Admin Portal
             </Link>
           )}
@@ -249,7 +249,7 @@ export const Navbar: React.FC = () => {
               <div className="relative" ref={userRef}>
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="flex items-center space-x-2 p-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-lavender-500/20 transition-all"
+                  className="flex items-center space-x-2 p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-lavender-500/20 transition-all"
                 >
                   <img
                     src={user.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=6F55B7&color=fff`}
@@ -257,33 +257,33 @@ export const Navbar: React.FC = () => {
                     className="w-8 h-8 rounded-lg object-cover"
                   />
                   <div className="hidden lg:flex flex-col text-left">
-                    <span className="text-xs font-semibold text-white leading-tight">{user.name.split(' ')[0]}</span>
-                    <span className="text-[10px] text-lavender-300 capitalize">{activeMode} Mode</span>
+                    <span className="text-xs font-semibold text-slate-900 dark:text-white leading-tight">{user.name.split(' ')[0]}</span>
+                    <span className="text-[10px] text-lavender-600 dark:text-lavender-300 capitalize font-medium">{activeMode} Mode</span>
                   </div>
-                  <ChevronDown className="w-4 h-4 text-gray-400" />
+                  <ChevronDown className="w-4 h-4 text-slate-500 dark:text-gray-400" />
                 </button>
 
                 {showUserMenu && (
                   <div className="absolute right-0 mt-2 w-60 rounded-2xl glass-panel border border-lavender-500/30 shadow-2xl py-2 z-50 animate-in fade-in zoom-in-95 text-xs">
-                    <div className="px-4 py-2 border-b border-white/5">
-                      <p className="font-semibold text-white text-sm">{user.name}</p>
-                      <p className="text-gray-400 truncate">{user.email}</p>
+                    <div className="px-4 py-2 border-b border-slate-200 dark:border-white/5">
+                      <p className="font-semibold text-slate-900 dark:text-white text-sm">{user.name}</p>
+                      <p className="text-slate-500 dark:text-gray-400 truncate">{user.email}</p>
                     </div>
 
                     {/* Mode Toggle inside Dropdown */}
                     <button
                       onClick={() => toggleTheme()}
-                      className="w-full text-left flex items-center justify-between px-4 py-2.5 text-gray-300 hover:text-white hover:bg-lavender-500/15"
+                      className="w-full text-left flex items-center justify-between px-4 py-2.5 text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-lavender-500/15"
                     >
                       <div className="flex items-center gap-2.5">
                         {theme === 'dark' ? (
-                          <Sun className="w-4 h-4 text-amber-300" />
+                          <Sun className="w-4 h-4 text-amber-400" />
                         ) : (
                           <Moon className="w-4 h-4 text-lavender-600" />
                         )}
                         <span>Theme: {theme === 'dark' ? 'Night (Dark)' : 'Day (Light)'}</span>
                       </div>
-                      <span className="text-[10px] uppercase font-bold text-lavender-400 bg-lavender-500/10 px-2 py-0.5 rounded-md border border-lavender-500/20">
+                      <span className="text-[10px] uppercase font-bold text-lavender-600 dark:text-lavender-400 bg-lavender-500/10 px-2 py-0.5 rounded-md border border-lavender-500/20">
                         Switch
                       </span>
                     </button>
@@ -291,54 +291,54 @@ export const Navbar: React.FC = () => {
                     <Link
                       to="/dashboard"
                       onClick={() => setShowUserMenu(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-gray-300 hover:text-white hover:bg-lavender-500/15"
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-lavender-500/15"
                     >
-                      <LayoutDashboard className="w-4 h-4 text-lavender-400" />
+                      <LayoutDashboard className="w-4 h-4 text-lavender-600 dark:text-lavender-400" />
                       Dashboard Overview
                     </Link>
 
                     <Link
                       to="/dashboard/trips"
                       onClick={() => setShowUserMenu(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-gray-300 hover:text-white hover:bg-lavender-500/15"
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-lavender-500/15"
                     >
-                      <Layers className="w-4 h-4 text-lavender-400" />
+                      <Layers className="w-4 h-4 text-lavender-600 dark:text-lavender-400" />
                       My Bookings (Rider)
                     </Link>
 
                     <Link
                       to="/dashboard/rides"
                       onClick={() => setShowUserMenu(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-gray-300 hover:text-white hover:bg-lavender-500/15"
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-lavender-500/15"
                     >
-                      <Car className="w-4 h-4 text-lavender-400" />
+                      <Car className="w-4 h-4 text-lavender-600 dark:text-lavender-400" />
                       My Published Rides
                     </Link>
 
                     <Link
                       to="/dashboard/vehicles"
                       onClick={() => setShowUserMenu(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-gray-300 hover:text-white hover:bg-lavender-500/15"
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-lavender-500/15"
                     >
-                      <SlidersHorizontal className="w-4 h-4 text-lavender-400" />
+                      <SlidersHorizontal className="w-4 h-4 text-lavender-600 dark:text-lavender-400" />
                       My Vehicles
                     </Link>
 
                     <Link
                       to="/dashboard/payments"
                       onClick={() => setShowUserMenu(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-gray-300 hover:text-white hover:bg-lavender-500/15"
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-lavender-500/15"
                     >
-                      <CreditCard className="w-4 h-4 text-lavender-400" />
+                      <CreditCard className="w-4 h-4 text-lavender-600 dark:text-lavender-400" />
                       Earnings & Payments
                     </Link>
 
                     <Link
                       to="/dashboard/profile"
                       onClick={() => setShowUserMenu(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-gray-300 hover:text-white hover:bg-lavender-500/15"
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white hover:bg-lavender-500/15"
                     >
-                      <User className="w-4 h-4 text-lavender-400" />
+                      <User className="w-4 h-4 text-lavender-600 dark:text-lavender-400" />
                       Profile & Verification
                     </Link>
 
@@ -346,21 +346,21 @@ export const Navbar: React.FC = () => {
                       <Link
                         to="/admin"
                         onClick={() => setShowUserMenu(false)}
-                        className="flex items-center gap-2.5 px-4 py-2.5 text-purple-300 hover:text-purple-200 hover:bg-purple-500/15 border-t border-white/5"
+                        className="flex items-center gap-2.5 px-4 py-2.5 text-purple-700 dark:text-purple-300 hover:text-purple-900 dark:hover:text-purple-200 hover:bg-purple-500/15 border-t border-slate-200 dark:border-white/5"
                       >
-                        <ShieldAlert className="w-4 h-4 text-purple-400" />
+                        <ShieldAlert className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                         Admin Portal
                       </Link>
                     )}
 
-                    <div className="border-t border-white/5 mt-1 pt-1">
+                    <div className="border-t border-slate-200 dark:border-white/5 mt-1 pt-1">
                       <button
                         onClick={() => {
                           logout();
                           setShowUserMenu(false);
                           navigate('/');
                         }}
-                        className="w-full text-left flex items-center gap-2.5 px-4 py-2 text-rose-400 hover:text-rose-300 hover:bg-rose-500/10"
+                        className="w-full text-left flex items-center gap-2.5 px-4 py-2 text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 hover:bg-rose-500/10 font-medium"
                       >
                         <LogOut className="w-4 h-4" />
                         Sign Out
@@ -374,7 +374,7 @@ export const Navbar: React.FC = () => {
             <div className="flex items-center space-x-2">
               <Link
                 to="/login"
-                className="px-4 py-2 rounded-xl text-sm font-medium text-gray-200 hover:text-white hover:bg-white/5 transition-colors"
+                className="px-4 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:text-lavender-700 hover:bg-lavender-500/10 dark:text-gray-200 dark:hover:text-white dark:hover:bg-white/5 transition-colors"
               >
                 Sign In
               </Link>
