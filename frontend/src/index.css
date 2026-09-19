@@ -23,7 +23,11 @@
   }
 }
 
-/* Custom Glassmorphism & Micro-styling */
+/* ==========================================================================
+   GLASSMORPHISM & CORE DESIGN SYSTEM
+   ========================================================================== */
+
+/* Dark mode (default) Glass Panels */
 .glass-panel {
   background: rgba(30, 27, 38, 0.75);
   backdrop-filter: blur(16px);
@@ -52,9 +56,10 @@
   border-bottom: 1px solid rgba(155, 126, 222, 0.12);
 }
 
+/* Buttons */
 .btn-primary {
   background: linear-gradient(135deg, #9B7EDE 0%, #6F55B7 100%);
-  color: #FFFFFF;
+  color: #FFFFFF !important;
   font-weight: 600;
   transition: all 0.25s ease;
   box-shadow: 0 4px 15px rgba(155, 126, 222, 0.35);
@@ -84,6 +89,7 @@
   color: #FFFFFF;
 }
 
+/* Text Gradients */
 .gradient-text {
   background: linear-gradient(135deg, #FFFFFF 30%, #C7B5EE 100%);
   -webkit-background-clip: text;
@@ -96,7 +102,7 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -113,25 +119,6 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #6F55B7;
-}
-
-/* Leaflet dark theme tweaks */
-.leaflet-container {
-  background: #1E1B26 !important;
-  border-radius: 0.75rem;
-  font-family: inherit !important;
-}
-
-.leaflet-popup-content-wrapper {
-  background: #1E1B26 !important;
-  color: #EEE8FA !important;
-  border: 1px solid rgba(155, 126, 222, 0.3) !important;
-  border-radius: 0.5rem !important;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
-}
-
-.leaflet-popup-tip {
-  background: #1E1B26 !important;
 }
 
 /* Dark Theme Date & Time Pickers */
@@ -156,6 +143,250 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover {
   transform: scale(1.1);
 }
 
+/* Leaflet Dark Theme */
+.leaflet-container {
+  background: #1E1B26 !important;
+  border-radius: 0.75rem;
+  font-family: inherit !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #1E1B26 !important;
+  color: #EEE8FA !important;
+  border: 1px solid rgba(155, 126, 222, 0.3) !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+.leaflet-popup-tip {
+  background: #1E1B26 !important;
+}
+
+/* ==========================================================================
+   DAY / LIGHT MODE ADAPTATION (html.light)
+   ========================================================================== */
+
+html.light body {
+  background-color: #F8F9FD !important;
+  color: #16131D !important;
+}
+
+/* Light mode Glass Panels */
+html.light .glass-panel {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border: 1px solid rgba(155, 126, 222, 0.22) !important;
+  box-shadow: 0 10px 30px -10px rgba(111, 85, 183, 0.1), 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+}
+
+html.light .glass-panel-hover {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border: 1px solid rgba(155, 126, 222, 0.22) !important;
+  box-shadow: 0 10px 30px -10px rgba(111, 85, 183, 0.08), 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+}
+
+html.light .glass-panel-hover:hover {
+  border-color: rgba(155, 126, 222, 0.55) !important;
+  box-shadow: 0 16px 35px -8px rgba(111, 85, 183, 0.18) !important;
+}
+
+html.light .glass-nav {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border-bottom: 1px solid rgba(155, 126, 222, 0.18) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Light Mode Background Overrides */
+html.light [class*="bg-[#16131D]"],
+html.light [class*="bg-[#1e1b26]"],
+html.light [class*="bg-[#1E1B26]"] {
+  background-color: #FFFFFF !important;
+  border-color: rgba(155, 126, 222, 0.22) !important;
+}
+
+html.light [class*="ring-[#1E1B26]"] {
+  --tw-ring-color: #FFFFFF !important;
+}
+
+html.light [class*="bg-white/5"],
+html.light [class*="bg-white/10"] {
+  background-color: rgba(155, 126, 222, 0.08) !important;
+}
+
+html.light [class*="hover:bg-white/5"]:hover,
+html.light [class*="hover:bg-white/10"]:hover {
+  background-color: rgba(155, 126, 222, 0.14) !important;
+}
+
+html.light [class*="border-white/5"],
+html.light [class*="border-white/10"] {
+  border-color: rgba(155, 126, 222, 0.16) !important;
+}
+
+html.light [class*="divide-white/5"] > * + * {
+  border-color: rgba(155, 126, 222, 0.14) !important;
+}
+
+/* Light Mode Headings & Typography */
+html.light h1,
+html.light h2,
+html.light h3,
+html.light h4,
+html.light h5,
+html.light h6 {
+  color: #16131D !important;
+}
+
+html.light .text-white:not(.btn-primary):not([class*="bg-lavender-6"]):not([class*="bg-lavender-7"]):not([class*="bg-purple-6"]):not([class*="bg-purple-7"]):not([class*="bg-emerald-5"]):not([class*="bg-emerald-6"]):not([class*="bg-rose-5"]):not([class*="bg-rose-6"]):not([class*="bg-amber-5"]):not([class*="bg-amber-6"]):not([class*="bg-blue-6"]) {
+  color: #16131D !important;
+}
+
+html.light .text-gray-200 {
+  color: #312C3D !important;
+}
+
+html.light .text-gray-300 {
+  color: #4A4458 !important;
+}
+
+html.light .text-gray-400 {
+  color: #696279 !important;
+}
+
+html.light .text-gray-500 {
+  color: #8A839C !important;
+}
+
+html.light .text-lavender-200 {
+  color: #5E469B !important;
+}
+
+html.light .text-lavender-300 {
+  color: #6F55B7 !important;
+}
+
+/* Light Mode Text Gradients */
+html.light .gradient-text {
+  background: linear-gradient(135deg, #16131D 20%, #6F55B7 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+html.light .gradient-text-lavender {
+  background: linear-gradient(135deg, #6F55B7 0%, #8363CF 50%, #543F8F 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+html.light [class*="from-white via-lavender-200 to-lavender-400"] {
+  background-image: linear-gradient(to right, #1E1B26, #543F8F, #8363CF) !important;
+}
+
+/* Light Mode Secondary Button */
+html.light .btn-secondary {
+  background: rgba(155, 126, 222, 0.12) !important;
+  color: #543F8F !important;
+  border: 1px solid rgba(155, 126, 222, 0.35) !important;
+  font-weight: 600 !important;
+}
+
+html.light .btn-secondary:hover {
+  background: rgba(155, 126, 222, 0.22) !important;
+  border-color: rgba(155, 126, 222, 0.55) !important;
+  color: #3D2D68 !important;
+}
+
+/* Light Mode Inputs, Selects, and Pickers */
+html.light input:not([type="checkbox"]):not([type="radio"]),
+html.light select,
+html.light textarea {
+  background-color: #FFFFFF !important;
+  color: #16131D !important;
+  border-color: rgba(155, 126, 222, 0.28) !important;
+}
+
+html.light input:focus,
+html.light select:focus,
+html.light textarea:focus {
+  border-color: #8363CF !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #8C869C !important;
+}
+
+html.light select option {
+  background-color: #FFFFFF !important;
+  color: #16131D !important;
+}
+
+html.light input[type="date"],
+html.light input[type="time"],
+html.light input[type="datetime-local"] {
+  color-scheme: light !important;
+}
+
+html.light input[type="date"]::-webkit-calendar-picker-indicator,
+html.light input[type="time"]::-webkit-calendar-picker-indicator,
+html.light input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: none !important;
+  opacity: 0.75;
+}
+
+/* Light Mode Footer */
+html.light footer {
+  background-color: #EDE8F5 !important;
+  color: #4F4760 !important;
+  border-top: 1px solid rgba(155, 126, 222, 0.25) !important;
+}
+
+html.light footer h4 {
+  color: #16131D !important;
+}
+
+html.light footer a {
+  color: #4F4760 !important;
+}
+
+html.light footer a:hover {
+  color: #6F55B7 !important;
+}
+
+html.light footer .text-gray-400,
+html.light footer .text-gray-500 {
+  color: #625B73 !important;
+}
+
+/* Light Mode Leaflet Container */
+html.light .leaflet-container {
+  background: #F3F1FA !important;
+}
+
+html.light .leaflet-popup-content-wrapper {
+  background: #FFFFFF !important;
+  color: #16131D !important;
+  border: 1px solid rgba(155, 126, 222, 0.3) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light .leaflet-popup-tip {
+  background: #FFFFFF !important;
+}
+
+/* Light Mode Scrollbars */
+html.light ::-webkit-scrollbar-track {
+  background: #F8F9FD;
+}
+
+html.light ::-webkit-scrollbar-thumb {
+  background: #D3CCE4;
+}
+
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #9B7EDE;
+}
+
+/* Animations */
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   20%, 60% { transform: translateX(-6px); }
@@ -165,4 +396,3 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover {
 .animate-shake {
   animation: shake 0.4s ease-in-out;
 }
-

@@ -15,12 +15,14 @@ import {
   SlidersHorizontal,
   Sparkles,
   CreditCard,
-  Layers
+  Layers,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 
 export const Navbar: React.FC = () => {
-  const { user, logout, notifications, unreadCount, markNotificationRead, markAllNotificationsRead, activeMode, setActiveMode } = useStore();
+  const { user, logout, notifications, unreadCount, markNotificationRead, markAllNotificationsRead, activeMode, setActiveMode, theme, toggleTheme } = useStore();
   const [showNotifMenu, setShowNotifMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const notifRef = useRef<HTMLDivElement>(null);
@@ -113,8 +115,30 @@ export const Navbar: React.FC = () => {
           )}
         </nav>
 
-        {/* Right Section: Mode Pill, Notifications, User Menu */}
-        <div className="flex items-center space-x-3">
+        {/* Right Section: Theme Mode Toggle, Mode Pill, Notifications, User Menu */}
+        <div className="flex items-center space-x-2.5">
+          
+          {/* Theme Mode Toggle Button (Always visible) */}
+          <button
+            onClick={toggleTheme}
+            type="button"
+            aria-label={theme === 'dark' ? 'Switch to Day Mode' : 'Switch to Night Mode'}
+            title={theme === 'dark' ? 'Switch to Day Mode (☀️ Light)' : 'Switch to Night Mode (🌙 Dark)'}
+            className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border border-lavender-500/20 transition-all duration-300 relative group flex items-center justify-center shadow-sm"
+          >
+            {theme === 'dark' ? (
+              <div className="flex items-center gap-1.5 px-0.5">
+                <Sun className="w-4 h-4 text-amber-300 group-hover:rotate-45 group-hover:scale-110 transition-transform duration-300" />
+                <span className="hidden xl:inline text-[11px] font-semibold text-amber-200">Day</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1.5 px-0.5">
+                <Moon className="w-4 h-4 text-lavender-600 group-hover:-rotate-12 group-hover:scale-110 transition-transform duration-300" />
+                <span className="hidden xl:inline text-[11px] font-semibold text-lavender-700">Night</span>
+              </div>
+            )}
+          </button>
+
           {user ? (
             <>
               {/* Role Perspective Switcher Pill */}
@@ -240,11 +264,29 @@ export const Navbar: React.FC = () => {
                 </button>
 
                 {showUserMenu && (
-                  <div className="absolute right-0 mt-2 w-56 rounded-2xl glass-panel border border-lavender-500/30 shadow-2xl py-2 z-50 animate-in fade-in zoom-in-95 text-xs">
+                  <div className="absolute right-0 mt-2 w-60 rounded-2xl glass-panel border border-lavender-500/30 shadow-2xl py-2 z-50 animate-in fade-in zoom-in-95 text-xs">
                     <div className="px-4 py-2 border-b border-white/5">
                       <p className="font-semibold text-white text-sm">{user.name}</p>
                       <p className="text-gray-400 truncate">{user.email}</p>
                     </div>
+
+                    {/* Mode Toggle inside Dropdown */}
+                    <button
+                      onClick={() => toggleTheme()}
+                      className="w-full text-left flex items-center justify-between px-4 py-2.5 text-gray-300 hover:text-white hover:bg-lavender-500/15"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        {theme === 'dark' ? (
+                          <Sun className="w-4 h-4 text-amber-300" />
+                        ) : (
+                          <Moon className="w-4 h-4 text-lavender-600" />
+                        )}
+                        <span>Theme: {theme === 'dark' ? 'Night (Dark)' : 'Day (Light)'}</span>
+                      </div>
+                      <span className="text-[10px] uppercase font-bold text-lavender-400 bg-lavender-500/10 px-2 py-0.5 rounded-md border border-lavender-500/20">
+                        Switch
+                      </span>
+                    </button>
 
                     <Link
                       to="/dashboard"
